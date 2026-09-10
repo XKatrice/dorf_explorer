@@ -40,6 +40,21 @@ button:hover {
     gap: 1rem;
 }
 
+@media (max-width: 700px) {
+    .score-grid {
+        grid-template-columns: 1fr;
+
+    input,
+    button {
+        font-size: 1rem;
+        }
+
+    input[type="number"] {
+        width: 100%;
+        box-sizing: border-box;
+        }
+    }
+}
 
 .score-item label {
     display: block;
