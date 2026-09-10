@@ -1,0 +1,90 @@
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Dorf Romantik Scorecard</h1>
+
+    <h2>Standard Scoring</h2>
+
+<div class="score-grid">
+    
+    <div class="score-item">
+        <label for="forest_tasks">Forest Tasks</label>
+        <input type="number" id="forest_tasks" min="0" value="0">
+    </div>
+    
+    <div class="score-item">
+        <label for="grain_tasks">Grain Tasks</label>
+        <input type="number" id="grain_tasks" min="0" value="0">
+    </div>
+    
+    <div class="score-item">
+        <label for="village_tasks">Village Tasks</label>
+        <input type="number" id="village_tasks" min="0" value="0">
+    </div>
+    
+    <div class="score-item">
+        <label for="rail_tasks">Railway Tasks</label>
+        <input type="number" id="rail_tasks" min="0" value="0">
+    </div>
+    
+    <div class="score-item">
+       <label for="river_tasks">River Tasks</label>
+        <input type="number" id="river_tasks" min="0" value="0"> 
+    </div>
+</div>
+
+ <p>Tasks Total: <span id="task_points">0</span></p>
+
+<div class="score-grid">
+    <div class="score-item">
+        <label for="long_rail">Longest Railway</label>
+        <input type="number" id="long_rail" min="0" value="0">
+    </div>
+
+    <div class="score-item">
+        <label for="long_river">Longest River</label>
+    <input type="number" id="long_river" min="0" value="0">
+    </div>
+
+    <div class="score-item">
+        <label for="flags_points">Flags Points</label>
+        <input type="number" id="flags_points" min="0" value="0">
+    </div>  
+</div>
+    
+   
+     <h2>Unlocked Specials</h2>
+
+<div class="score-grid">
+    <div class="score-item">
+        <label for="heart_points">Hearts</label>
+        <input type="number" id="heart_points" min="0" value="0">
+    </div>
+
+    <div class="score-item">
+        <label for="harvest_festival">Harvest Festival</label>
+        <input type="number" id="harvest_festival" min="0" value="0">
+    </div>
+    
+    <div class="score-item">
+        <label for="circus">Circus completely surrounded</label>
+        <input type="checkbox" id="circus">
+    </div>  
+</div>
+
+
+
+<div>
+    <h2>Scoreboard</h2>
+    <button type="button" id="calculate_score">Calculate Score</button>
+
+    <p>Score: <span id="total_points">0</span></p>
+</div>
+
+
+<script src="app.js"></script>
+</body>
+</html>

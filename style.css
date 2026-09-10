@@ -1,0 +1,46 @@
+body {
+    background-color: #F5F0E6;
+    color: #3F4438;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+h1, h2 {
+    color: #465C43;
+}
+
+button {
+    background-color: #6F8F68;
+    color: #FFFFFF;
+
+    border: none;
+    border-radius: 6px;
+
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #587653;
+}
+
+#total_points {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#task_points {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.score-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+
+.score-item label {
+    display: block;
+}
