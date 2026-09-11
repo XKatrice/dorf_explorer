@@ -1,8 +1,13 @@
-const calculateButton = document.getElementById("calculate_score");
 
-calculateButton.addEventListener("click", calculateScore);
+const scoreInputs = document.querySelectorAll(".score-input");
+
+scoreInputs.forEach(function(input) {
+    input.addEventListener("input", calculateScore);
+});
+
 
 function calculateScore() {
+
 
 // Tasks Scores 
 
@@ -32,7 +37,7 @@ function calculateScore() {
 // Flags scoring
 
     const forestFlagInput = document.getElementById("flag_forest");
-    const forestflagsPoints = Number(forestFlagInput.value);
+    const forestFlagsPoints = Number(forestFlagInput.value);
 
     const grainFlagInput = document.getElementById("flag_grain");
     const grainFlagsPoints = Number(grainFlagInput.value);
@@ -60,7 +65,7 @@ function calculateScore() {
 
     const taskTotal = forestPoints + grainPoints + villagePoints + railPoints + riverPoints
 
-    const flagTotal = forestflagsPoints + grainFlagsPoints + villageFlagsPoints
+    const flagTotal = forestFlagsPoints + grainFlagsPoints + villageFlagsPoints
 
     const longTotal = longRailPoints + longRiverPoints
 
@@ -100,10 +105,30 @@ function calculateScore() {
     const summarySpecialScoreDisplay = document.getElementById("summary_special_points");
     summarySpecialScoreDisplay.textContent = specialPoints;
 
+    const summaryTaskForestDisplay = document.getElementById("summary_task_forest");
+    summaryTaskForestDisplay.textContent = forestPoints;
 
+    const summaryTaskGrainDisplay = document.getElementById("summary_task_grain");
+    summaryTaskGrainDisplay.textContent = grainPoints;
 
+    const summaryTaskVillageDisplay = document.getElementById("summary_task_village");
+    summaryTaskVillageDisplay.textContent = villagePoints;
 
+    const summaryFlagForestDisplay = document.getElementById("summary_flag_forest");
+    summaryFlagForestDisplay.textContent = forestFlagsPoints;
 
+    const summaryFlagGrainDisplay = document.getElementById("summary_flag_grain");
+    summaryFlagGrainDisplay.textContent = grainFlagsPoints;
 
-  console.log(circusPoints);
+    const summaryFlagVillageDisplay = document.getElementById("summary_flag_village");
+    summaryFlagVillageDisplay.textContent = villageFlagsPoints;
+    
+    const summaryRedHeartDisplay = document.getElementById("summary_redhearts");
+    summaryRedHeartDisplay.textContent = heartsPoints;
+
+    const summaryHarvestDisplay = document.getElementById("summary_harvest");
+    summaryHarvestDisplay.textContent = harvestPoints;
+
+    const summaryCircusDisplay = document.getElementById("summary_circus");
+    summaryCircusDisplay.textContent = circusPoints;
 }
