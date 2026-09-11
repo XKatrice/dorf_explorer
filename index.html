@@ -4,76 +4,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
+<img class="banner" src="assets/dorfexplorerbanner.png">
     <h1>Dorf Romantik Scorecard</h1>
 
     <h2>Standard Scoring</h2>
 
+    <h3> Tasks</h3>
+
 <div class="score-grid">
     
     <div class="score-item">
+        <img class="score-icon" src="assets/forest-tasks.png" alt="Picture of Trees">
         <label for="forest_tasks">Forest Tasks</label>
         <input type="number" id="forest_tasks" min="0" placeholder="0">
     </div>
     
     <div class="score-item">
+        <img class="score-icon" src="assets/field-tasks.png" alt="Picture of fields">
         <label for="grain_tasks">Grain Tasks</label>
         <input type="number" id="grain_tasks" min="0" placeholder="0">
     </div>
     
     <div class="score-item">
+        <img class="score-icon" src="assets/village-tasks.png" alt="Picture of village">
         <label for="village_tasks">Village Tasks</label>
         <input type="number" id="village_tasks" min="0" placeholder="0">
     </div>
     
     <div class="score-item">
+        <img class="score-icon" src="assets/railway.png">
         <label for="rail_tasks">Railway Tasks</label>
         <input type="number" id="rail_tasks" min="0" placeholder="0">
     </div>
     
     <div class="score-item">
+        <img class="score-icon" src="assets/river.png">
        <label for="river_tasks">River Tasks</label>
         <input type="number" id="river_tasks" min="0" placeholder="0"> 
     </div>
+    <p class="total">Tasks Total: <span id="task_points">0</span></p>
 </div>
 
- <p>Tasks Total: <span id="task_points">0</span></p>
+ 
+
+ <h3>Flags</h3>
 
 <div class="score-grid">
+    
     <div class="score-item">
+        <div class="icon-stack">
+            <img class="base-icon" src="assets/forest-tasks.png" alt="Picture of Trees">
+            <img class="overlay-icon" src="assets/flags.png" alt="Picture of Flags">
+        </div>
+        <label for="flag_forest">Forest Flags</label>
+        <input type="number" id="flag_forest" min="0" placeholder="0">
+    </div>  
+
+    <div class="score-item">
+        <div class="icon-stack">
+            <img class="base-icon" src="assets/field-tasks.png" alt="Picture of fields">
+            <img class="overlay-icon" src="assets/flags.png" alt="Picture of Flags">
+        </div>
+        <label for="flag_grain">Grain Flags</label>
+        <input type="number" id="flag_grain" min="0" placeholder="0">
+    </div>  
+
+    <div class="score-item">
+        <div class="icon-stack">
+            <img class="base-icon" src="assets/village-tasks.png" alt="Picture of village">
+            <img class="overlay-icon" src="assets/flags.png" alt="Picture of Flags">
+        </div>
+        <label for="flag_village">Village Flags</label>
+        <input type="number" id="flag_village" min="0" placeholder="0">
+    </div>
+    <p class="total">Flags Total: <span id="flag_points">0</span></p>  
+</div>
+ 
+
+
+<h3>Longest Rivers and Railways</h3>
+
+<div class="score-grid">
+
+    <div class="score-item">
+         <img class="score-icon" src="assets/railway.png">
         <label for="long_rail">Longest Railway</label>
         <input type="number" id="long_rail" min="0" placeholder="0">
     </div>
 
     <div class="score-item">
+         <img class="score-icon" src="assets/river.png">
         <label for="long_river">Longest River</label>
     <input type="number" id="long_river" min="0" placeholder="0">
     </div>
 
-    <div class="score-item">
-        <label for="flags_points">Flags Points</label>
-        <input type="number" id="flags_points" min="0" placeholder="0">
-    </div>  
+    <p class="total">Rail and River Total Length: <span id="longest_points">0</span></p>
 </div>
-    
+
+
    
      <h2>Unlocked Specials</h2>
 
 <div class="score-grid">
     <div class="score-item">
+        <img class="score-icon" src="assets/heart-special.png">
         <label for="heart_points">Hearts</label>
         <input type="number" id="heart_points" min="0" placeholder="0">
     </div>
 
     <div class="score-item">
+         <img class="score-icon" src="assets/harvest.png">
         <label for="harvest_festival">Harvest Festival</label>
         <input type="number" id="harvest_festival" min="0" placeholder="0">
     </div>
     
     <div class="score-item">
+         <img class="score-icon" src="assets/circus.png">
         <label for="circus">Circus completely surrounded</label>
         <input type="checkbox" id="circus">
     </div>  
+    <p class="total">Score from Specials: <span id="special_points">0</span></p>
 </div>
 
 
@@ -81,8 +131,30 @@
 <div>
     <h2>Scoreboard</h2>
     <button type="button" id="calculate_score">Calculate Score</button>
+     <p class="total">Grand Total for Game: <span id="total_points">0</span></p>
+    
 
-    <p>Score: <span id="total_points">0</span></p>
+    <div class="score-summary">
+        <div class="summary-row">
+            Tasks: <span id="summary_task_points">0</span>
+        </div>
+        <div class="summary-row">
+            Flags: <span id="summary_flag_points">0</span>
+        </div>
+        <div class="summary-row">
+            Longest River: <span id="points_long_river">0</span>
+        </div>
+        <div class="summary-row">
+            Longest Railway: <span id="points_long_rail">0</span>
+        </div>
+        <div class="summary-row">
+            Points from Specials: <span id="summary_special_points">0</span>
+        </div>
+
+
+
+    </div>
+   
 </div>
 
 

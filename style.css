@@ -1,16 +1,28 @@
+:root {
+    --cream: #F5F0E6;
+    --text: #3F4438;
+    --forest: #465C43;
+    --sage: #6F8F68;
+    --deep-sage: #587653;
+    --card: #FFFCF6;
+    --border: #D8D1C4;
+}
+
+
 body {
-    background-color: #F5F0E6;
-    color: #3F4438;
+    background-color:var(--cream);
+    color: var(--text);
     font-family: Georgia, "Times New Roman", serif;
 }
 
-h1, h2 {
-    color: #465C43;
+h1, h2, h3 {
+    color: var(--forest);
+    justify-self: center;
 }
 
 button {
-    background-color: #6F8F68;
-    color: #FFFFFF;
+    background-color: var(--sage);
+    color: var(--card);
 
     border: none;
     border-radius: 6px;
@@ -19,25 +31,35 @@ button {
     font-size: 1rem;
 
     cursor: pointer;
+    justify-self: center;
 }
 
 button:hover {
-    background-color: #587653;
+    background-color: var(--deep-sage);
 }
 
-#total_points {
-    font-size: 2rem;
+.total {
+    font-size: 1.5rem;
     font-weight: bold;
+    justify-self: right;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: var(--cream);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    grid-column: -2 / -1;
 }
 
-#task_points {
-    font-size: 2rem;
-    font-weight: bold;
-}
+
 .score-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 2rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: var(--cream);
+    padding: 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 700px) {
@@ -58,4 +80,78 @@ button:hover {
 
 .score-item label {
     display: block;
+}
+
+
+.score-icon {
+    width: 100%;
+    max-width: 80px;
+    height: auto;
+    justify-self: center;
+
+}
+
+.mini-icon {
+    width: 100%;
+    max-width: 50px;
+    height: auto;
+    justify-self: center;
+
+}
+.score-item {
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: var(--card);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+}
+
+.score-item input {
+    width: 3rem;
+}
+
+.banner {
+    width: 100%;
+    justify-self: center;
+}
+
+.icon-stack {
+    position: relative;
+    width: 100px;
+}
+
+.base-icon {
+    width: 100%;
+    max-width: 80px;
+    height: auto;
+    opacity: 0.8;
+}
+
+.overlay-icon {
+    position: absolute;
+    width: 50px;
+    right: 30px;
+    bottom: -8px;
+    filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.3));
+}
+
+
+.score-summary {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.summary-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
 }
