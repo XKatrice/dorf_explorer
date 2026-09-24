@@ -1,3 +1,13 @@
+import { saveGame } from "./storage.js";
+
+console.log("app.js loaded");
+
+const saveGameButton = document.getElementById("save_game");
+
+console.log("save button:", saveGameButton);
+
+saveGameButton.addEventListener("click", saveGame);
+
 
 const scoreInputs = document.querySelectorAll(".score-input");
 
@@ -132,3 +142,5 @@ function calculateScore() {
     const summaryCircusDisplay = document.getElementById("summary_circus");
     summaryCircusDisplay.textContent = circusPoints;
 }
+
+

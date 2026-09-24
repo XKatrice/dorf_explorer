@@ -51,6 +51,18 @@ button:hover {
     grid-column: -2 / -1;
 }
 
+.navigation{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: var(--cream);
+    padding: 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.5rem;
+
+}
 
 .score-grid {
     display: grid;
@@ -177,4 +189,17 @@ button:hover {
     grid-template-columns: 1fr auto;
     gap: 1rem;
     margin-top: 0.75rem;
+}
+
+.index-item {
+
+    gap: 2rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: var(--cream);
+    padding: 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.5rem;
+    max-width: 300px;
+    justify-self: unset;
 }
