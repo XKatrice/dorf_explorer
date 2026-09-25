@@ -42,6 +42,18 @@ export function calculateScore() {
     const heartsInput = document.getElementById("heart_points");
     const heartsPoints = Number(heartsInput.value);
 
+    const watchtowerInput = document.getElementById("watchtower_points");
+    const watchtowerPoints = Number(watchtowerInput.value);
+
+    const forestCabinInput = document.getElementById("forest_cabin_points");
+    const forestCabinPoints = Number(forestCabinInput.value);
+
+    const shipInput = document.getElementById("ship_points");
+    const shipPoints = Number(shipInput.value);
+
+    const locomotiveInput = document.getElementById("locomotive_points");
+    const locomotivePoints = Number(locomotiveInput.value);
+
     const harvestInput = document.getElementById("harvest_points");
     const harvestPoints = Number(harvestInput.value);
 
@@ -61,7 +73,7 @@ export function calculateScore() {
 
     const longTotal = longRailPoints + longRiverPoints
 
-    const specialPoints = heartsPoints + harvestPoints + circusPoints
+    const specialPoints = heartsPoints + harvestPoints + circusPoints + watchtowerPoints + forestCabinPoints + shipPoints + locomotivePoints
 
     const totalPoints = taskTotal + longTotal + flagTotal + specialPoints;
 
@@ -120,6 +132,18 @@ export function calculateScore() {
 
     const summaryHarvestDisplay = document.getElementById("summary_harvest");
     summaryHarvestDisplay.textContent = harvestPoints;
+
+    const summaryWatchtowerDisplay = document.getElementById("summary_watchtower");
+    summaryWatchtowerDisplay.textContent = watchtowerPoints;
+
+    const summaryForestCabinDisplay = document.getElementById("summary_forest_cabin");
+    summaryForestCabinDisplay.textContent = forestCabinPoints;
+
+    const summaryShipDisplay = document.getElementById("summary_ship");
+    summaryShipDisplay.textContent = shipPoints;
+
+    const summaryLocomotiveDisplay = document.getElementById("summary_locomotive");
+    summaryLocomotiveDisplay.textContent = locomotivePoints;
 
     const summaryCircusDisplay = document.getElementById("summary_circus");
     summaryCircusDisplay.textContent = circusPoints;

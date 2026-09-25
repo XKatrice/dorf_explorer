@@ -399,7 +399,7 @@
         <label for="heart_points">Hearts</label>
         <input class="score-input" type="number" id="heart_points" min="0" placeholder="0">
 
-            <p>Hearts score for each perfectly aligned tile surrounding them, up to a maximum of 6 points</p>
+            <p>Hearts score for each perfectly aligned tile surrounding them, up to a maximum of 6 points around each heart.</p>
 
     </div>
 
@@ -781,6 +781,30 @@
 
         </div>
         <div class="summary-expand-row">
+        Watchtower: <span id="summary_watchtower">0</span>
+
+
+        </div>
+
+        <div class="summary-expand-row">
+        Forest Cabin: <span id="summary_forest_cabin">0</span>
+
+
+        </div>
+
+        <div class="summary-expand-row">
+        Ship: <span id="summary_ship">0</span>
+
+
+        </div>
+
+          <div class="summary-expand-row">
+        Locomotive: <span id="summary_locomotive">0</span>
+
+
+        </div>
+
+        <div class="summary-expand-row">
             Circus: <span id="summary_circus">0</span>
         </div>
  <p class="total">Grand Total for Game: <span id="total_points">0</span></p>
@@ -790,11 +814,21 @@
 
     </div>
 
-    <button type="button" id="save-game">
-        <img src="assets/save.png" alt="" class="menu-icon">
-        <span>Save to Campaign</span>
+    <div class="save-actions">
+    <button
+        type="button"
+        id="save-game"
+        class="save-button"
+    >
+        <img
+            src="assets/save.png"
+            alt=""
+            class="save-button-icon"
+        >
+
+        <span>Save and View Campaign</span>
     </button>
-    
+</div>
 </div>
 <script type="module" src="js/app.js" ></script>
 </body>

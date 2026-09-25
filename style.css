@@ -499,3 +499,75 @@ details.saved-game {
     }
 }
 
+.score-grid > .total {
+    align-self: start;
+    justify-self: center;
+    height: fit-content;
+}
+
+
+
+.save-actions {
+    display: flex;
+    justify-content: center;
+
+    margin: 1.5rem 0 2.5rem;
+}
+
+.save-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+
+    width: auto;
+    padding: 0.75rem 1.25rem;
+
+    background-color: var(--sage);
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.save-button-icon {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+.save-button:hover {
+    background-color: var(--deep-sage);
+}
+
+.save-button:focus-visible {
+    outline: 3px solid var(--forest);
+    outline-offset: 3px;
+}
+
+
+.saved-game-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 1.25rem;
+}
+
+.delete-game-button {
+    background-color: transparent;
+    color: #9a3f35;
+
+    border: 1px solid #9a3f35;
+    padding: 0.55rem 0.85rem;
+}
+
+.delete-game-button:hover {
+    background-color: #9a3f35;
+    color: white;
+}

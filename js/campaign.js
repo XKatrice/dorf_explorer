@@ -134,9 +134,38 @@ export async function initialiseCampaign() {
                     <dl class="score-breakdown">
                         ${scoreBreakdown}
                     </dl>
+                <div class="saved-game-actions">
+                    <button type="button" class="delete-game-button">
+                        Delete this record
+                    </button>
+                </div>
                 </div>
             `;
+                        const deleteButton =
+    gameEntry.querySelector(".delete-game-button");
 
+    deleteButton.addEventListener("click", function () {
+        const confirmed = window.confirm(
+        `Delete the ${game.total}-point game?`
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    const remainingGames = savedGames.filter(
+        function (savedGame) {
+            return savedGame.id !== game.id;
+        }
+    );
+
+    localStorage.setItem(
+        "dorfExplorerGames",
+        JSON.stringify(remainingGames)
+    );
+
+    gameEntry.remove();
+});
             savedGamesList.appendChild(gameEntry);
         });
 }
