@@ -1,25 +1,30 @@
-
 export function saveGame() {
+    const scoreInputs = document.querySelectorAll(".score-input");
+
+    const scores = {};
+
+    scoreInputs.forEach(function (input) {
+        scores[input.id] = Number(input.value) || 0;
+    });
 
     const game = {
-        total: Number(document.getElementById("total_points").textContent),
-        tasks: Number(document.getElementById("task_points").textContent),
-        flags: Number(document.getElementById("flag_points").textContent),
-
-        longestRiver: Number(
-            document.getElementById("points_long_river").textContent
-        ),
-
-        longestRailway: Number(
-            document.getElementById("points_long_rail").textContent
-        ),
-
-        specials: Number(
-            document.getElementById("special_points").textContent
-        )
+        id: crypto.randomUUID(),
+        savedAt: new Date().toISOString(),
+        scores: scores,
+        total: Number(
+            document.getElementById("total_points").textContent
+        ) || 0
     };
 
-    console.log(game);
-    console.log("Saving is not implemented yet")
-}
+    const savedGames =
+        JSON.parse(localStorage.getItem("dorfExplorerGames")) || [];
 
+    savedGames.push(game);
+
+    localStorage.setItem(
+        "dorfExplorerGames",
+        JSON.stringify(savedGames)
+    );
+
+    console.log("Game saved:", game);
+}
