@@ -27,37 +27,308 @@
 </nav>
 
 <div class="score-grid">
-    <h3> Tasks</h3>
-    
-    <div class="score-item">
-        <img class="score-icon" src="assets/forest-tasks.png" alt="Picture of Trees">
-        <label for="forest_tasks">Forest Tasks</label>
-        <input class="score-input" type="number" id="forest_tasks" min="0" placeholder="0">
+    <div class="score-item special-tile">
+    <img
+        class="score-icon"
+        src="assets/forest-tasks.png"
+        alt=""
+    >
+
+    <h3>Forest Tasks</h3>
+
+    <p>
+        Enter each completed forest-task score.
+    </p>
+
+    <form
+        id="forest-tasks-form"
+        class="special-entry"
+    >
+        <label for="forest-task-score">
+            Task score
+        </label>
+
+        <div class="special-entry-controls">
+            <input
+                type="number"
+                id="forest-task-score"
+                min="1"
+                inputmode="numeric"
+                placeholder="0"
+            >
+
+            <button type="submit">Add</button>
+        </div>
+    </form>
+
+    <div
+        id="forest-task-score-list"
+        class="entered-scores"
+        aria-live="polite"
+    ></div>
+
+    <div class="special-calculation">
+        <p>
+            Task subtotal:
+            <span id="forest-task-subtotal">0</span>
+        </p>
+
+        <p>
+            Total:
+            <span id="forest-task-total">0</span>
+        </p>
     </div>
+
+    <input
+        type="hidden"
+        id="forest_tasks"
+        class="score-input"
+        value="0"
+    >
+</div>
+
+
+
     
-    <div class="score-item">
-        <img class="score-icon" src="assets/field-tasks.png" alt="Picture of fields">
-        <label for="grain_tasks">Grain Tasks</label>
-        <input class="score-input" type="number" id="grain_tasks" min="0" placeholder="0">
+    <div class="score-item special-tile">
+    <img
+        class="score-icon"
+        src="assets/field-tasks.png"
+        alt=""
+    >
+
+    <h3>Grain Tasks</h3>
+
+    <p>
+        Enter each completed grain-task score.
+    </p>
+
+    <form
+        id="grain-tasks-form"
+        class="special-entry"
+    >
+        <label for="grain-task-score">
+            Task score
+        </label>
+
+        <div class="special-entry-controls">
+            <input
+                type="number"
+                id="grain-task-score"
+                min="1"
+                inputmode="numeric"
+                placeholder="0"
+            >
+
+            <button type="submit">Add</button>
+        </div>
+    </form>
+
+    <div
+        id="grain-task-score-list"
+        class="entered-scores"
+        aria-live="polite"
+    ></div>
+
+    <div class="special-calculation">
+        <p>
+            Task subtotal:
+            <span id="grain-subtotal">0</span>
+        </p>
+
+        <p>
+            Total:
+            <span id="grain-total">0</span>
+        </p>
     </div>
+
+    <input
+        type="hidden"
+        id="grain_tasks"
+        class="score-input"
+        value="0"
+    >
+</div>
     
-    <div class="score-item">
-        <img class="score-icon" src="assets/village-tasks.png" alt="Picture of village">
-        <label for="village_tasks">Village Tasks</label>
-        <input class="score-input" type="number" id="village_tasks" min="0" placeholder="0">
+    <div class="score-item special-tile">
+    <img
+        class="score-icon"
+        src="assets/village-tasks.png"
+        alt=""
+    >
+
+    <h3>Village Tasks</h3>
+
+    <p>
+        Enter each completed village-task score.
+    </p>
+
+    <form
+        id="village-tasks-form"
+        class="special-entry"
+    >
+        <label for="village-task-score">
+            Task score
+        </label>
+
+        <div class="special-entry-controls">
+            <input
+                type="number"
+                id="village-task-score"
+                min="1"
+                inputmode="numeric"
+                placeholder="0"
+            >
+
+            <button type="submit">Add</button>
+        </div>
+    </form>
+
+    <div
+        id="village-task-score-list"
+        class="entered-scores"
+        aria-live="polite"
+    ></div>
+
+    <div class="special-calculation">
+        <p>
+            Task subtotal:
+            <span id="village-subtotal">0</span>
+        </p>
+
+        <p>
+            Total:
+            <span id="village-total">0</span>
+        </p>
     </div>
+
+    <input
+        type="hidden"
+        id="village_tasks"
+        class="score-input"
+        value="0"
+    >
+</div>
     
-    <div class="score-item">
-        <img class="score-icon" src="assets/railway.png">
-        <label for="rail_tasks">Railway Tasks</label>
-        <input class="score-input" type="number" id="rail_tasks" min="0" placeholder="0">
+    <div class="score-item special-tile">
+    <img
+        class="score-icon"
+        src="assets/railway.png"
+        alt=""
+    >
+
+    <h3>Railway Tasks</h3>
+
+    <p>
+        Enter each completed railway-task score.
+    </p>
+
+    <form
+        id="rail-tasks-form"
+        class="special-entry"
+    >
+        <label for="rail-task-score">
+            Task score
+        </label>
+
+        <div class="special-entry-controls">
+            <input
+                type="number"
+                id="rail-task-score"
+                min="1"
+                inputmode="numeric"
+                placeholder="0"
+            >
+
+            <button type="submit">Add</button>
+        </div>
+    </form>
+
+    <div
+        id="rail-task-score-list"
+        class="entered-scores"
+        aria-live="polite"
+    ></div>
+
+    <div class="special-calculation">
+        <p>
+            Task subtotal:
+            <span id="rail-subtotal">0</span>
+        </p>
+
+        <p>
+            Total:
+            <span id="rail-total">0</span>
+        </p>
     </div>
+
+    <input
+        type="hidden"
+        id="rail_tasks"
+        class="score-input"
+        value="0"
+    >
+</div>
     
-    <div class="score-item">
-        <img class="score-icon" src="assets/river.png">
-       <label for="river_tasks">River Tasks</label>
-        <input class="score-input" type="number" id="river_tasks" min="0" placeholder="0"> 
+    <div class="score-item special-tile">
+    <img
+        class="score-icon"
+        src="assets/river.png"
+        alt=""
+    >
+
+    <h3>River Tasks</h3>
+
+    <p>
+        Enter each completed river-task score.
+    </p>
+
+    <form
+        id="river-tasks-form"
+        class="special-entry"
+    >
+        <label for="river-task-score">
+            Task score
+        </label>
+
+        <div class="special-entry-controls">
+            <input
+                type="number"
+                id="river-task-score"
+                min="1"
+                inputmode="numeric"
+                placeholder="0"
+            >
+
+            <button type="submit">Add</button>
+        </div>
+    </form>
+
+    <div
+        id="river-task-score-list"
+        class="entered-scores"
+        aria-live="polite"
+    ></div>
+
+    <div class="special-calculation">
+        <p>
+            Task subtotal:
+            <span id="river-subtotal">0</span>
+        </p>
+
+        <p>
+            Total:
+            <span id="river-total">0</span>
+        </p>
     </div>
+
+    <input
+        type="hidden"
+        id="river_tasks"
+        class="score-input"
+        value="0"
+    >
+</div>
     <p class="total">Tasks Total: <span id="task_points">0</span></p>
 </div>
 
@@ -127,6 +398,9 @@
         <img class="score-icon" src="assets/heart-special.png">
         <label for="heart_points">Hearts</label>
         <input class="score-input" type="number" id="heart_points" min="0" placeholder="0">
+
+            <p>Hearts score for each perfectly aligned tile surrounding them, up to a maximum of 6 points</p>
+
     </div>
 
     
@@ -137,6 +411,7 @@
         alt=""
         class="score-icon"
     >
+
 
     <h3>Harvest Festival</h3>
 

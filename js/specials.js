@@ -1,16 +1,17 @@
 import { calculateScore } from "./scoring.js";
 
 
-function calculateDoubledTasks(scores) {
+
+function calculateTaskTotal(scores, multiplier) {
     const subtotal = scores.reduce(function (total, score) {
         return total + score;
     }, 0);
 
-    return subtotal * 2;
+    return subtotal * multiplier;
 }
 
 
-function initialiseDoubledTaskSpecial(config) {
+function initialiseTaskEntry(config) {
     const scores = [];
 
     const form = document.getElementById(config.formId);
@@ -61,12 +62,12 @@ function initialiseDoubledTaskSpecial(config) {
             0
         );
 
-        const doubledTotal =
-            calculateDoubledTasks(scores);
+        const finalTotal =
+            calculateTaskTotal(scores, config.multiplier);
 
         subtotalDisplay.textContent = subtotal;
-        totalDisplay.textContent = doubledTotal;
-        pointsInput.value = doubledTotal;
+        totalDisplay.textContent = finalTotal;
+        pointsInput.value = finalTotal;
 
         renderScores();
         calculateScore();
@@ -91,53 +92,115 @@ function initialiseDoubledTaskSpecial(config) {
 }
 
 export function initialiseSpecials() {
-    initialiseDoubledTaskSpecial({
+    initialiseTaskEntry({
         formId: "harvest-form",
         inputId: "harvest-task-score",
         scoreListId: "harvest-score-list",
         subtotalId: "harvest-subtotal",
         totalId: "harvest-total",
         pointsInputId: "harvest_points",
-        chipClass: "score-chip--field"
+        chipClass: "score-chip--field",
+        multiplier: 2
     });
 
-    initialiseDoubledTaskSpecial({
+    initialiseTaskEntry({
         formId: "watchtower-form",
         inputId: "watchtower-task-score",
         scoreListId: "watchtower-score-list",
         subtotalId: "watchtower-subtotal",
         totalId: "watchtower-total",
         pointsInputId: "watchtower_points",
-        chipClass: "score-chip--village"
+        chipClass: "score-chip--village",
+        multiplier: 2
     });
 
-    initialiseDoubledTaskSpecial({
+    initialiseTaskEntry({
     formId: "forest-cabin-form",
     inputId: "forest-cabin-task-score",
     scoreListId: "forest-cabin-score-list",
     subtotalId: "forest-cabin-subtotal",
     totalId: "forest-cabin-total",
     pointsInputId: "forest_cabin_points",
-    chipClass: "score-chip--forest"
+    chipClass: "score-chip--forest",
+    multiplier: 2
 });
 
-initialiseDoubledTaskSpecial({
+initialiseTaskEntry({
     formId: "ship-form",
     inputId: "ship-task-score",
     scoreListId: "ship-score-list",
     subtotalId: "ship-subtotal",
     totalId: "ship-total",
     pointsInputId: "ship_points",
-    chipClass: "score-chip--river"
+    chipClass: "score-chip--river",
+    multiplier: 2
 });
 
-initialiseDoubledTaskSpecial({
+initialiseTaskEntry({
     formId: "locomotive-form",
     inputId: "locomotive-task-score",
     scoreListId: "locomotive-score-list",
     subtotalId: "locomotive-subtotal",
     totalId: "locomotive-total",
     pointsInputId: "locomotive_points",
-    chipClass: "score-chip--railway"
+    chipClass: "score-chip--railway",
+    multiplier: 2
 });
+
+initialiseTaskEntry({
+    formId: "forest-tasks-form",
+    inputId: "forest-task-score",
+    scoreListId: "forest-task-score-list",
+    subtotalId: "forest-task-subtotal",
+    totalId: "forest-task-total",
+    pointsInputId: "forest_tasks",
+    chipClass: "score-chip--forest",
+    multiplier: 1
+});
+
+initialiseTaskEntry({
+    formId: "grain-tasks-form",
+    inputId: "grain-task-score",
+    scoreListId: "grain-task-score-list",
+    subtotalId: "grain-subtotal",
+    totalId: "grain-total",
+    pointsInputId: "grain_tasks",
+    chipClass: "score-chip--field",
+    multiplier: 1
+});
+
+initialiseTaskEntry({
+    formId: "village-tasks-form",
+    inputId: "village-task-score",
+    scoreListId: "village-task-score-list",
+    subtotalId: "village-subtotal",
+    totalId: "village-total",
+    pointsInputId: "village_tasks",
+    chipClass: "score-chip--village",
+    multiplier: 1
+});
+
+initialiseTaskEntry({
+    formId: "rail-tasks-form",
+    inputId: "rail-task-score",
+    scoreListId: "rail-task-score-list",
+    subtotalId: "rail-subtotal",
+    totalId: "rail-total",
+    pointsInputId: "rail_tasks",
+    chipClass: "score-chip--railway",
+    multiplier: 1
+});
+
+initialiseTaskEntry({
+    formId: "river-tasks-form",
+    inputId: "river-task-score",
+    scoreListId: "river-task-score-list",
+    subtotalId: "river-subtotal",
+    totalId: "river-total",
+    pointsInputId: "river_tasks",
+    chipClass: "score-chip--river",
+    multiplier: 1
+});
+
+
 }
