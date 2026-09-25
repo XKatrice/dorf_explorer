@@ -564,7 +564,7 @@ details.saved-game {
 
     #save-game {
         width: fit-content;
-        max-width: 220px;
+        max-width: 240px;
         min-height: 44px;
 
         padding: 0.6rem 0.9rem;
