@@ -520,8 +520,11 @@ details.saved-game {
     justify-content: center;
     gap: 0.65rem;
 
-    width: auto;
-    padding: 0.75rem 1.25rem;
+    width: fit-content;
+    max-width: 15rem;
+    min-height: 44px;
+
+    padding: 0.7rem 1rem;
 
     background-color: var(--sage);
     color: white;
@@ -532,6 +535,7 @@ details.saved-game {
     font-family: inherit;
     font-size: 1rem;
     font-weight: bold;
+    white-space: nowrap;
 
     cursor: pointer;
 }
@@ -571,3 +575,7 @@ details.saved-game {
     background-color: #9a3f35;
     color: white;
 }
+
+
+
+
