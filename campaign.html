@@ -2,6 +2,7 @@
 <head>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 <body>
 <img class="banner" src="assets/dorfexplorerbanner.png">
@@ -25,11 +26,11 @@
 
 </nav>
 
-<div class="score-actions">
+<!--  <div class="score-actions">
 
     <button type="button" id="new-game">
         <img src="assets/new.png" alt="" class="menu-icon">
-        <span>New</span>
+       <span>New</span>
     </button>
 
     <button type="button" id="load-game">
@@ -42,12 +43,15 @@
         <span>Save Campaign</span>
     </button>
 
-</div>
+</div> -->
 
 
+<section class="saved-games">
+    <h2>Game History</h2>
+    <div id="saved-games-list"></div>
+</section>
 
-<script type="module" src="js/storage.js" defer></script>
-<script type="module" src="js/scoring.js" defer></script>
+
 <script type="module" src="js/app.js" defer></script>
 </body>
 </html>

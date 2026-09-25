@@ -123,14 +123,14 @@
 
 <div class="score-grid">
     <h3>Unlocked Specials</h3>
-    <div class="score-item">
+    <div class="score-item special-tile">
         <img class="score-icon" src="assets/heart-special.png">
         <label for="heart_points">Hearts</label>
         <input class="score-input" type="number" id="heart_points" min="0" placeholder="0">
     </div>
 
     
-    <div class="score-item special-score">
+    <div class="score-item special-tile">
 
     <img
         src="assets/harvest.png"
@@ -140,7 +140,7 @@
 
     <h3>Harvest Festival</h3>
 
-    <p class="score-help">
+    <p>
         Enter each connected field-task score separately.
     </p>
 
@@ -160,9 +160,8 @@
                 placeholder="0"
             >
 
-            <button type="submit">
-                Add
-            </button>
+            <button type="submit"> Add</button>
+            
 
         </div>
 
@@ -182,11 +181,10 @@
         </p>
 
         <p>
-            Harvest bonus:
-            × 2
+            Harvest bonus: × 2
         </p>
 
-        <p class="special-result">
+        <p>
             Total:
             <output id="harvest-total">0</output>
         </p>
@@ -203,6 +201,253 @@
 
 </div>
 
+<div class="score-item special-tile">
+    <img
+        src="assets/watchtower.png"
+        alt=""
+        class="score-icon"
+    >
+
+    <h3>Watchtower</h3>
+
+    <p>
+        Enter each connected village-task score separately.
+    </p>
+
+    <form
+        id="watchtower-form"
+        class="special-entry"
+    >
+        <label for="watchtower-task-score">
+            Task score
+        </label>
+
+        <div class="special-entry-controls">
+            <input
+                type="number"
+                id="watchtower-task-score"
+                min="1"
+                inputmode="numeric"
+                placeholder="0"
+            >
+
+            <button type="submit">Add</button>
+        </div>
+    </form>
+
+    <div
+        id="watchtower-score-list"
+        class="entered-scores"
+        aria-live="polite"
+    ></div>
+
+    <div class="special-calculation">
+        <p>
+            Connected tasks:
+            <span id="watchtower-subtotal">0</span>
+        </p>
+
+        <p>Watchtower bonus: × 2</p>
+
+        <p>
+            Total:
+            <span id="watchtower-total">0</span>
+        </p>
+    </div>
+
+    <input
+        type="hidden"
+        id="watchtower_points"
+        class="score-input"
+        value="0"
+    >
+</div>
+
+<div class="score-item special-tile">
+    <img
+        src="assets/cabin.png"
+        alt=""
+        class="score-icon"
+    >
+
+    <h3>Forest Cabin</h3>
+
+    <p>
+        Enter each connected forest-task score separately.
+    </p>
+
+    <form
+        id="forest-cabin-form"
+        class="special-entry"
+    >
+        <label for="forest-cabin-task-score">
+            Task score
+        </label>
+
+        <div class="special-entry-controls">
+            <input
+                type="number"
+                id="forest-cabin-task-score"
+                min="1"
+                inputmode="numeric"
+                placeholder="0"
+            >
+
+            <button type="submit">Add</button>
+        </div>
+    </form>
+
+    <div
+        id="forest-cabin-score-list"
+        class="entered-scores"
+        aria-live="polite"
+    ></div>
+
+    <div class="special-calculation">
+        <p>
+            Connected tasks:
+            <span id="forest-cabin-subtotal">0</span>
+        </p>
+
+        <p>Forest Cabin bonus: × 2</p>
+
+        <p>
+            Total:
+            <span id="forest-cabin-total">0</span>
+        </p>
+    </div>
+
+    <input
+        type="hidden"
+        id="forest_cabin_points"
+        class="score-input"
+        value="0"
+    >
+</div>
+
+<div class="score-item special-tile">
+    <img
+        src="assets/ship.png"
+        alt=""
+        class="score-icon"
+    >
+
+    <h3>Ship</h3>
+
+    <p>
+        Enter each connected river-task score separately.
+    </p>
+
+    <form
+        id="ship-form"
+        class="special-entry"
+    >
+        <label for="ship-task-score">
+            Task score
+        </label>
+
+        <div class="special-entry-controls">
+            <input
+                type="number"
+                id="ship-task-score"
+                min="1"
+                inputmode="numeric"
+                placeholder="0"
+            >
+
+            <button type="submit">Add</button>
+        </div>
+    </form>
+
+    <div
+        id="ship-score-list"
+        class="entered-scores"
+        aria-live="polite"
+    ></div>
+
+    <div class="special-calculation">
+        <p>
+            Connected tasks:
+            <span id="ship-subtotal">0</span>
+        </p>
+
+        <p>Ship bonus: × 2</p>
+
+        <p>
+            Total:
+            <span id="ship-total">0</span>
+        </p>
+    </div>
+
+    <input
+        type="hidden"
+        id="ship_points"
+        class="score-input"
+        value="0"
+    >
+</div>
+
+<div class="score-item special-tile">
+    <img
+        src="assets/locomotive.png"
+        alt=""
+        class="score-icon"
+    >
+
+    <h3>Locomotive</h3>
+
+    <p>
+        Enter each connected railway-task score separately.
+    </p>
+
+    <form
+        id="locomotive-form"
+        class="special-entry"
+    >
+        <label for="locomotive-task-score">
+            Task score
+        </label>
+
+        <div class="special-entry-controls">
+            <input
+                type="number"
+                id="locomotive-task-score"
+                min="1"
+                inputmode="numeric"
+                placeholder="0"
+            >
+
+            <button type="submit">Add</button>
+        </div>
+    </form>
+
+    <div
+        id="locomotive-score-list"
+        class="entered-scores"
+        aria-live="polite"
+    ></div>
+
+    <div class="special-calculation">
+        <p>
+            Connected tasks:
+            <span id="locomotive-subtotal">0</span>
+        </p>
+
+        <p>Locomotive bonus: × 2</p>
+
+        <p>
+            Total:
+            <span id="locomotive-total">0</span>
+        </p>
+    </div>
+
+    <input
+        type="hidden"
+        id="locomotive_points"
+        class="score-input"
+        value="0"
+    >
+</div>
     
     <div class="score-item">
          <img class="score-icon" src="assets/circus.png">

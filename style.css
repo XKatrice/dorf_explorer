@@ -302,6 +302,200 @@ button:hover {
     line-height: 1;
 }
 
-button.setAttribute{
-    "aria-label": Remove task worth ${score} points
-};
+
+
+#saved-games-list {
+    display: grid;
+    gap: 0.35rem;
+}
+
+details.saved-game {
+    display: block;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-left: 6px solid var(--sage);
+    border-radius: 10px;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    gap: 0.5rem;
+}
+
+.saved-game summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+}
+
+.saved-game summary:hover {
+    background-color: var(--cream);
+}
+
+.saved-game-total {
+    color: var(--forest);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.saved-game-date {
+    text-align: right;
+}
+
+.saved-game-details {
+    padding: 0 1.5rem 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.saved-game-details h3 {
+    margin: 1.25rem 0 1rem;
+    color: var(--forest);
+}
+
+.score-breakdown {
+    margin: 0;
+}
+
+.score-breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.score-breakdown-row:last-child {
+    border-bottom: none;
+}
+
+.score-breakdown-row dt,
+.score-breakdown-row dd {
+    margin: 0;
+}
+
+.score-breakdown-row dd {
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .saved-game summary {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .saved-game-date {
+        text-align: left;
+    }
+}
+
+
+.special-entry-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+}
+
+.saved-game-ranking {
+    margin: 0.25rem 0 1rem;
+    color: var(--forest);
+    font-weight: bold;
+}
+
+
+.special-tile {
+    display: grid;
+
+    grid-template-columns: 1fr auto;
+
+    grid-template-areas:
+        "icon icon"
+        "title title"
+        "description entry"
+        "scores scores"
+        "calculation calculation";
+
+    column-gap: 1.5rem;
+    row-gap: 1rem;
+
+    align-items: center;
+}
+
+.special-tile > .score-icon {
+    grid-area: icon;
+
+    width: 100px;
+    height: 100px;
+
+    object-fit: contain;
+    justify-self: center;
+}
+
+.special-tile > h3 {
+    grid-area: title;
+
+    margin: 0;
+    text-align: center;
+}
+
+.special-tile > p {
+    grid-area: description;
+
+    margin: 0;
+}
+
+.special-entry {
+    grid-area: entry;
+    display: grid;
+    gap: 0.25rem;
+}
+
+.entered-scores {
+    grid-area: scores;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+
+    min-height: 3.25rem;
+}
+
+.special-calculation {
+    grid-area: calculation;
+
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+}
+
+
+.special-entry-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+
+@media (max-width: 600px) {
+    .special-tile {
+        grid-template-columns: 1fr;
+
+        grid-template-areas:
+            "icon"
+            "title"
+            "description"
+            "entry"
+            "scores"
+            "calculation";
+    }
+
+    .special-entry {
+        justify-self: center;
+    }
+}
+

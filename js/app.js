@@ -1,8 +1,12 @@
 import { calculateScore } from "./scoring.js";
 import { saveGame } from "./storage.js";
-import { initialiseHarvest } from "./specials.js";
+import { initialiseCampaign } from "./campaign.js";
+import { initialiseSpecials } from "./specials.js";
+initialiseCampaign();
 
-initialiseHarvest();
+initialiseSpecials();
+
+
 
 const saveButton = document.getElementById("save-game");
 
@@ -17,6 +21,7 @@ scoreInputs.forEach(function (input) {
 
 
 console.log("score inputs:", scoreInputs);
+
 
 
 
