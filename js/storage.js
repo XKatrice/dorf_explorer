@@ -20,4 +20,6 @@ export function saveGame() {
     };
 
     console.log(game);
+    console.log("Saving is not implemented yet")
 }
+

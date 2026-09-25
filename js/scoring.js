@@ -1,22 +1,4 @@
-import { saveGame } from "./storage.js";
-
-console.log("app.js loaded");
-
-const saveGameButton = document.getElementById("save_game");
-
-console.log("save button:", saveGameButton);
-
-saveGameButton.addEventListener("click", saveGame);
-
-
-const scoreInputs = document.querySelectorAll(".score-input");
-
-scoreInputs.forEach(function(input) {
-    input.addEventListener("input", calculateScore);
-});
-
-
-function calculateScore() {
+export function calculateScore() {
 
 
 // Tasks Scores 
@@ -60,7 +42,7 @@ function calculateScore() {
     const heartsInput = document.getElementById("heart_points");
     const heartsPoints = Number(heartsInput.value);
 
-    const harvestInput = document.getElementById("harvest_festival");
+    const harvestInput = document.getElementById("harvest_points");
     const harvestPoints = Number(harvestInput.value);
 
     const circusInput = document.getElementById("circus");
@@ -141,6 +123,8 @@ function calculateScore() {
 
     const summaryCircusDisplay = document.getElementById("summary_circus");
     summaryCircusDisplay.textContent = circusPoints;
+
+    
 }
 
 

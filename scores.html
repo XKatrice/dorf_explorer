@@ -7,11 +7,24 @@
 <img class="banner" src="assets/dorfexplorerbanner.png">
     <h1>Dorf Romantik Scorecard</h1>
 
-<div class="navigation">
-<div class="nav-item"><a href="scores.html">Scoresheet</a></div>
-<div class="nav-item"><a href="index.html">Home</a></div>
-<div class="nav-item"><a href="campaign.html">Campaign</a></div>
-</div>
+<nav class="main-menu" aria-label="Main navigation">
+
+    <a class="menu-link" href="index.html">
+        <img src="assets/home.png" alt="" class="menu-icon">
+        <span>Home</span>
+    </a>
+
+    <a class="menu-link" href="scores.html">
+        <img src="assets/scorecard.png" alt="" class="menu-icon">
+        <span>Scorecard</span>
+    </a>
+
+    <a class="menu-link" href="campaign.html">
+        <img src="assets/campaign.png" alt="" class="menu-icon">
+        <span>Campaign</span>
+    </a>
+
+</nav>
 
 <div class="score-grid">
     <h3> Tasks</h3>
@@ -116,11 +129,80 @@
         <input class="score-input" type="number" id="heart_points" min="0" placeholder="0">
     </div>
 
-    <div class="score-item">
-         <img class="score-icon" src="assets/harvest.png">
-        <label for="harvest_festival">Harvest Festival</label>
-        <input class="score-input" type="number" id="harvest_festival" min="0" placeholder="0">
+    
+    <div class="score-item special-score">
+
+    <img
+        src="assets/harvest.png"
+        alt=""
+        class="score-icon"
+    >
+
+    <h3>Harvest Festival</h3>
+
+    <p class="score-help">
+        Enter each connected field-task score separately.
+    </p>
+
+    <form id="harvest-form" class="special-entry">
+
+        <label for="harvest-task-score">
+            Task score
+        </label>
+
+        <div class="special-entry-controls">
+
+            <input
+                type="number"
+                id="harvest-task-score"
+                min="1"
+                inputmode="numeric"
+                placeholder="0"
+            >
+
+            <button type="submit">
+                Add
+            </button>
+
+        </div>
+
+    </form>
+
+    <div
+        id="harvest-score-list"
+        class="entered-scores"
+        aria-live="polite"
+    ></div>
+
+    <div class="special-calculation">
+
+        <p>
+            Connected tasks:
+            <span id="harvest-subtotal">0</span>
+        </p>
+
+        <p>
+            Harvest bonus:
+            × 2
+        </p>
+
+        <p class="special-result">
+            Total:
+            <output id="harvest-total">0</output>
+        </p>
+
     </div>
+
+    <!-- The calculated value used by calculateScore() -->
+    <input
+        type="hidden"
+        id="harvest_points"
+        class="score-input"
+        value="0"
+    >
+
+</div>
+
     
     <div class="score-item">
          <img class="score-icon" src="assets/circus.png">
@@ -174,7 +256,9 @@
         </div>
         
         <div class="summary-expand-row">
-            Harvest  Festival: <span id="summary_harvest">0</span>
+        Harvest  Festival: <span id="summary_harvest">0</span>
+
+
         </div>
         <div class="summary-expand-row">
             Circus: <span id="summary_circus">0</span>
@@ -186,11 +270,12 @@
 
     </div>
 
-    <button type="button" id="save_game">Save Game</button>
+    <button type="button" id="save-game">
+        <img src="assets/save.png" alt="" class="menu-icon">
+        <span>Save to Campaign</span>
+    </button>
     
 </div>
-
-
-<script type="module" src="app.js"></script>
+<script type="module" src="js/app.js" ></script>
 </body>
 </html>

@@ -6,18 +6,48 @@
 <body>
 <img class="banner" src="assets/dorfexplorerbanner.png">
   
-<div class="navigation">
-<div class="nav-item"><a href="scores.html">Scoresheet</a></div>
-<div class="nav-item"><a href="index.html">Home</a></div>
-<div class="nav-item"><a href="campaign.html">Campaign</a></div>
+<nav class="main-menu" aria-label="Main navigation">
+
+    <a class="menu-link" href="index.html">
+        <img src="assets/home.png" alt="" class="menu-icon">
+        <span>Home</span>
+    </a>
+
+    <a class="menu-link" href="scores.html">
+        <img src="assets/scorecard.png" alt="" class="menu-icon">
+        <span>Scorecard</span>
+    </a>
+
+    <a class="menu-link" href="campaign.html">
+        <img src="assets/campaign.png" alt="" class="menu-icon">
+        <span>Campaign</span>
+    </a>
+
+</nav>
+
+<div class="score-actions">
+
+    <button type="button" id="new-game">
+        <img src="assets/new.png" alt="" class="menu-icon">
+        <span>New</span>
+    </button>
+
+    <button type="button" id="load-game">
+        <img src="assets/load.png" alt="" class="menu-icon">
+        <span>Load</span>
+    </button>
+
+    <button type="button" id="save-campaign">
+        <img src="assets/save.png" alt="" class="menu-icon">
+        <span>Save Campaign</span>
+    </button>
+
 </div>
 
-<div class="navigation">
-<div class="nav-item"><a href="scores.html">Load</a></div>
-<div class="nav-item"><a href="index.html">New</a></div>
-<div class="nav-item"><a href="campaign.html">Save</a></div>
-</div>
 
-<script type="module" src="app.js"></script>
+
+<script type="module" src="js/storage.js" defer></script>
+<script type="module" src="js/scoring.js" defer></script>
+<script type="module" src="js/app.js" defer></script>
 </body>
 </html>
