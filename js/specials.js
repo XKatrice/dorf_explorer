@@ -91,7 +91,82 @@ function initialiseTaskEntry(config) {
     });
 }
 
+function initialiseCountEntry(config) {
+    const input = document.getElementById(config.inputId);
+
+    if (!input) {
+        return;
+    }
+
+    const totalDisplay = document.getElementById(config.totalId);
+    const pointsInput = document.getElementById(config.pointsInputId);
+
+    function updateScore() {
+        const count = Number(input.value);
+        const points = input.validity.valid && Number.isInteger(count) && count >= 0
+            ? count * config.multiplier
+            : 0;
+
+        totalDisplay.textContent = points;
+        pointsInput.value = points;
+        calculateScore();
+    }
+
+    input.addEventListener("input", updateScore);
+    updateScore();
+}
+
+function initialiseHearts() {
+    const inputs = [
+        document.getElementById("heart-1-score"),
+        document.getElementById("heart-2-score"),
+        document.getElementById("heart-3-score")
+    ];
+
+    if (!inputs[0]) {
+        return;
+    }
+
+    const totalDisplay = document.getElementById("hearts-total");
+    const pointsInput = document.getElementById("heart_points");
+
+    function updateScore() {
+        const total = inputs.reduce(function (sum, input) {
+            const score = Number(input.value);
+            const validScore = input.validity.valid && Number.isInteger(score)
+                && score >= 0 && score <= 6;
+
+            return sum + (validScore ? score : 0);
+        }, 0);
+
+        totalDisplay.textContent = total;
+        pointsInput.value = total;
+        calculateScore();
+    }
+
+    inputs.forEach(function (input) {
+        input.addEventListener("input", updateScore);
+    });
+    updateScore();
+}
+
 export function initialiseSpecials() {
+    initialiseHearts();
+
+    initialiseCountEntry({
+        inputId: "signalman-count",
+        totalId: "signalman-total",
+        pointsInputId: "signalman_points",
+        multiplier: 2
+    });
+
+    initialiseCountEntry({
+        inputId: "shepherdess-count",
+        totalId: "shepherdess-total",
+        pointsInputId: "shepherdess_points",
+        multiplier: 2
+    });
+
     initialiseTaskEntry({
         formId: "harvest-form",
         inputId: "harvest-task-score",

@@ -37,6 +37,12 @@ export function calculateScore() {
     const villageFlagInput = document.getElementById("flag_village");
     const villageFlagsPoints = Number(villageFlagInput.value);
 
+    const harbourInput = document.getElementById("harbour");
+    const harbourPoints = Number(harbourInput.value);
+
+    const trainStationInput = document.getElementById("train_station");
+    const trainStationPoints = Number(trainStationInput.value);
+
 // Unlocked Scoring
 
     const heartsInput = document.getElementById("heart_points");
@@ -57,6 +63,12 @@ export function calculateScore() {
     const harvestInput = document.getElementById("harvest_points");
     const harvestPoints = Number(harvestInput.value);
 
+    const signalmanInput = document.getElementById("signalman_points");
+    const signalmanPoints = Number(signalmanInput.value);
+
+    const shepherdessInput = document.getElementById("shepherdess_points");
+    const shepherdessPoints = Number(shepherdessInput.value);
+
     const circusInput = document.getElementById("circus");
 
     let circusPoints = 0;
@@ -69,11 +81,11 @@ export function calculateScore() {
 
     const taskTotal = forestPoints + grainPoints + villagePoints + railPoints + riverPoints
 
-    const flagTotal = forestFlagsPoints + grainFlagsPoints + villageFlagsPoints
+    const flagTotal = forestFlagsPoints + grainFlagsPoints + villageFlagsPoints + harbourPoints + trainStationPoints
 
     const longTotal = longRailPoints + longRiverPoints
 
-    const specialPoints = heartsPoints + harvestPoints + circusPoints + watchtowerPoints + forestCabinPoints + shipPoints + locomotivePoints
+    const specialPoints = heartsPoints + harvestPoints + circusPoints + watchtowerPoints + forestCabinPoints + shipPoints + locomotivePoints + signalmanPoints + shepherdessPoints
 
     const totalPoints = taskTotal + longTotal + flagTotal + specialPoints;
 
@@ -126,6 +138,12 @@ export function calculateScore() {
 
     const summaryFlagVillageDisplay = document.getElementById("summary_flag_village");
     summaryFlagVillageDisplay.textContent = villageFlagsPoints;
+
+    const summaryHarbourDisplay = document.getElementById("summary_harbour");
+    summaryHarbourDisplay.textContent = harbourPoints;
+
+    const summaryTrainStationDisplay = document.getElementById("summary_train_station");
+    summaryTrainStationDisplay.textContent = trainStationPoints;
     
     const summaryRedHeartDisplay = document.getElementById("summary_redhearts");
     summaryRedHeartDisplay.textContent = heartsPoints;
@@ -144,6 +162,12 @@ export function calculateScore() {
 
     const summaryLocomotiveDisplay = document.getElementById("summary_locomotive");
     summaryLocomotiveDisplay.textContent = locomotivePoints;
+
+    const summarySignalmanDisplay = document.getElementById("summary_signalman");
+    summarySignalmanDisplay.textContent = signalmanPoints;
+
+    const summaryShepherdessDisplay = document.getElementById("summary_shepherdess");
+    summaryShepherdessDisplay.textContent = shepherdessPoints;
 
     const summaryCircusDisplay = document.getElementById("summary_circus");
     summaryCircusDisplay.textContent = circusPoints;

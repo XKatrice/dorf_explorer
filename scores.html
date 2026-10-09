@@ -336,7 +336,7 @@
 
 
 <div class="score-grid">
-    <h3>Flags</h3>
+    <h3>Flags, Harbour and Train Station</h3>
     
     <div class="score-item">
         <div class="icon-stack">
@@ -364,6 +364,21 @@
         <label for="flag_village">Village Flags</label>
         <input class="score-input" type="number" id="flag_village" min="0" placeholder="0">
     </div>
+     
+    <div class="score-item">
+         <img class="score-icon" src="assets/harbour.png" alt="">
+        <label for="harbour">Harbour</label>
+        <input class="score-input" type="number" id="harbour" min="0" placeholder="0">
+        <p>If the Harbour is on a closed off river, gain 1 point for each of that river's tiles</p>
+    </div>
+    
+    <div class="score-item">
+    
+         <img class="score-icon" src="assets/train-station.png" alt="">
+        <label for="train_station">Train Station</label>
+        <input class="score-input" type="number" id="train_station" min="0" placeholder="0">
+        <p>If the Train Station is on a closed off track, gain 1 point for each of that track's tiles</p>
+    </div> 
     <p class="total">Flags Total: <span id="flag_points">0</span></p>  
 </div>
  
@@ -395,11 +410,30 @@
 <div class="score-grid">
     <h3>Unlocked Specials</h3>
     <div class="score-item special-tile">
-        <img class="score-icon" src="assets/heart-special.png">
-        <label for="heart_points">Hearts</label>
-        <input class="score-input" type="number" id="heart_points" min="0" placeholder="0">
+        <img class="score-icon" src="assets/heart-special.png" alt="">
+        <h3>Hearts</h3>
 
             <p>Hearts score for each perfectly aligned tile surrounding them, up to a maximum of 6 points around each heart.</p>
+
+        <div class="special-entry">
+            <div class="heart-entry">
+                <label for="heart-1-score"><img class="mini-icon" src="assets/heart-special.png" alt="Heart 1"></label>
+                <input type="number" id="heart-1-score" min="0" max="6" step="1" inputmode="numeric" placeholder="0">
+            </div>
+            <div class="heart-entry">
+                <label for="heart-2-score"><img class="mini-icon" src="assets/heart-special.png" alt="Heart 2"></label>
+                <input type="number" id="heart-2-score" min="0" max="6" step="1" inputmode="numeric" placeholder="0">
+            </div>
+            <div class="heart-entry">
+                <label for="heart-3-score"><img class="mini-icon" src="assets/heart-special.png" alt="Heart 3"></label>
+                <input type="number" id="heart-3-score" min="0" max="6" step="1" inputmode="numeric" placeholder="0">
+            </div>
+        </div>
+
+        <div class="special-calculation">
+            <p>Total: <output id="hearts-total" aria-live="polite">0</output></p>
+        </div>
+        <input type="hidden" id="heart_points" class="score-input" value="0">
 
     </div>
 
@@ -729,6 +763,46 @@
         <label for="circus">Circus completely surrounded</label>
         <input class="score-input" type="checkbox" id="circus">
     </div>  
+    <div class="score-item special-tile">
+        <img class="score-icon" src="assets/signalman.png" alt="">
+        <h3>Signalman</h3>
+        <p>Score 2 points for each level crossing on the railway connected to the Signalman.</p>
+
+        <div class="special-entry">
+            <label for="signalman-count">Connected level crossings</label>
+            <div class="special-entry-controls">
+                <input type="number" id="signalman-count" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+        </div>
+
+        <div class="special-calculation">
+            <p>Points per level crossing: 2</p>
+            <p>Total: <output id="signalman-total" aria-live="polite">0</output></p>
+        </div>
+
+        <input type="hidden" id="signalman_points" class="score-input" value="0">
+    </div>
+
+    <div class="score-item special-tile">
+        <img class="score-icon" src="assets/shepherdess.png" alt="">
+        <h3>Shepherdess</h3>
+        <p>Score 2 points for each sheep in the grain field area connected to the Shepherdess.</p>
+
+        <div class="special-entry">
+            <label for="shepherdess-count">Connected sheep</label>
+            <div class="special-entry-controls">
+                <input type="number" id="shepherdess-count" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+        </div>
+
+        <div class="special-calculation">
+            <p>Points per sheep: 2</p>
+            <p>Total: <output id="shepherdess-total" aria-live="polite">0</output></p>
+        </div>
+
+        <input type="hidden" id="shepherdess_points" class="score-input" value="0">
+    </div>
+
     <p class="total">Score from Specials: <span id="special_points">0</span></p>
 </div>
 
@@ -761,6 +835,12 @@
         </div>
         <div class="summary-expand-row">
             Villages: <span id="summary_flag_village">0</span>
+        </div>
+        <div class="summary-expand-row">
+            Harbour: <span id="summary_harbour">0</span>
+        </div>
+        <div class="summary-expand-row">
+            Train Station: <span id="summary_train_station">0</span>
         </div>
         <div class="summary-row">
             Longest River: <span id="points_long_river">0</span>
@@ -806,6 +886,12 @@
 
         <div class="summary-expand-row">
             Circus: <span id="summary_circus">0</span>
+        </div>
+        <div class="summary-expand-row">
+            Signalman: <span id="summary_signalman">0</span>
+        </div>
+        <div class="summary-expand-row">
+            Shepherdess: <span id="summary_shepherdess">0</span>
         </div>
  <p class="total">Grand Total for Game: <span id="total_points">0</span></p>
         </div>

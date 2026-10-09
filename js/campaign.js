@@ -7,13 +7,18 @@ const scoreLabels = {
     flag_forest: "Forest flags",
     flag_grain: "Grain flags",
     flag_village: "Village flags",
-    longest_rail: "Longest railway",
-    longest_river: "Longest river",
+    harbour: "Harbour",
+    train_station: "Train Station",
+    long_rail: "Longest Railway",
+    long_river: "Longest River",
+    heart_points: "Hearts",
     harvest_points: "Harvest Festival",
     watchtower_points: "Watchtower",
     forest_cabin_points: "Forest Cabin",
     ship_points: "Ship",
-    locomotive_points: "Locomotive"
+    locomotive_points: "Locomotive",
+    signalman_points: "Signalman",
+    shepherdess_points: "Shepherdess"
 };
 
 

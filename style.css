@@ -449,6 +449,18 @@ details.saved-game {
     margin: 0;
 }
 
+.heart-entry {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.heart-entry .mini-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
 .special-entry {
     grid-area: entry;
     display: grid;
