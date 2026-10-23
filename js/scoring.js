@@ -1,4 +1,4 @@
-import { readScoreInput, isValidScore } from "./validation.js?v=0f4147c0c5d0";
+import { readScoreInput, isValidScore } from "./validation.js?v=e8f9789fcdec";
 
 export function calculateScore() {
 

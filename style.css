@@ -705,6 +705,7 @@ a.delete-game-button:focus-visible {
 
 
 .campaign-tracker {
+    overflow-anchor: none;
     max-width: 1320px;
     margin: 0 auto 4rem;
     padding: 0 1rem;

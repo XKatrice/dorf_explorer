@@ -111,6 +111,20 @@ async function main() {
         await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
         assert(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), 'Mobile page overflows');
         assert.equal(await evaluate("getComputedStyle(document.querySelector('.main-menu')).gridTemplateColumns.split(' ').length"), 2);
+        await evaluate("const map=document.getElementById('campaign-map');map.scrollLeft=150;map.scrollTop=map.scrollHeight;map.scrollIntoView({block:'center'})");
+        const mapPosition = await evaluate("({left:document.getElementById('campaign-map').scrollLeft,top:document.getElementById('campaign-map').scrollTop,pageY:window.scrollY})");
+        assert(mapPosition.left > 0 && mapPosition.top > 0, 'Regression test must start with the map scrolled in both directions');
+        for (const activation of ["new MouseEvent('click',{bubbles:true})", "new KeyboardEvent('keydown',{key:'Enter',bubbles:true})"]) {
+            await evaluate(`document.querySelector('[data-step="box2-circus:1"]').dispatchEvent(${activation})`);
+            const after = await evaluate("({left:document.getElementById('campaign-map').scrollLeft,top:document.getElementById('campaign-map').scrollTop,pageY:window.scrollY})");
+            assert.deepEqual(after, mapPosition, 'Choosing a circle must preserve map and page scrolling');
+            assert.equal(await evaluate("document.getElementById('movement-spent').textContent"), '9');
+            await evaluate("document.getElementById('undo-movement').click()");
+            const undone = await evaluate("({left:document.getElementById('campaign-map').scrollLeft,top:document.getElementById('campaign-map').scrollTop})");
+            assert.equal(undone.left, mapPosition.left);
+            assert.equal(undone.top, mapPosition.top);
+        }
+        console.log('PASS: mobile map and page scroll positions remain unchanged after circle clicks, keyboard selection, and undo.');
         const mobile = await send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(output, 'campaign-mobile.png'), Buffer.from(mobile.data, 'base64'));
         console.log('PASS: mobile layout fits 390px; screenshots saved.');

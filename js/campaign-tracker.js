@@ -1,10 +1,10 @@
-import { readGames, readStoredJSON, writeStoredJSON } from "./data-store.js?v=0f4147c0c5d0";
-import { loadGameRankings } from "./rankings.js?v=0f4147c0c5d0";
-import { ARCHIVE_KEY, ensureCampaignStarted, assertCampaignAssociation, assertCampaignEditable, buildCampaignFile, startNewCampaign, downloadCampaignFile, parseCampaignFile, importCampaignFile } from "./campaign-files.js?v=0f4147c0c5d0";
+import { readGames, readStoredJSON, writeStoredJSON } from "./data-store.js?v=e8f9789fcdec";
+import { loadGameRankings } from "./rankings.js?v=e8f9789fcdec";
+import { ARCHIVE_KEY, ensureCampaignStarted, assertCampaignAssociation, assertCampaignEditable, buildCampaignFile, startNewCampaign, downloadCampaignFile, parseCampaignFile, importCampaignFile } from "./campaign-files.js?v=e8f9789fcdec";
 import {
     CAMPAIGN_KEY, CAMPAIGN_NODES, CAMPAIGN_PATHS, readCampaignState,
     movementEarned, campaignProgress, campaignAchievements, spendMovement, pathLength, stepId
-} from "./campaign-model.js?v=0f4147c0c5d0";
+} from "./campaign-model.js?v=e8f9789fcdec";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 const nodeById = new Map(CAMPAIGN_NODES.map(node => [node.id, node]));
@@ -69,6 +69,8 @@ export async function initialiseCampaignTracker() {
         }
 
         function advance(id) {
+            const pageX = window.scrollX;
+            const pageY = window.scrollY;
             try {
                 const before = campaignProgress(state, earned);
                 // Re-read both records to avoid spending from a stale tab balance.
@@ -86,12 +88,13 @@ export async function initialiseCampaignTracker() {
             } catch (problem) {
                 render();
                 error(problem.message);
+            } finally {
+                window.scrollTo(pageX, pageY);
             }
         }
 
         function renderMap(progress) {
             const map = document.getElementById("campaign-map");
-            map.replaceChildren();
             const svg = svgElement("svg", { viewBox: "0 0 900 1410", "aria-label": "Campaign advancement tree. Start at the bottom. Choose a highlighted circle to spend one point." });
             const curves = svgElement("g", { "aria-hidden": "true" });
             const circles = svgElement("g");
@@ -124,7 +127,10 @@ export async function initialiseCampaignTracker() {
                     const activate = () => {
                         if (!canSpend) return;
                         advance(id);
-                        document.querySelector('.campaign-step.is-available[aria-disabled="false"]')?.focus();
+                        const path = id.split(":")[0];
+                        const next = document.querySelector(`.campaign-step.is-available[aria-disabled="false"][data-step^="${path}:"]`)
+                            || document.querySelector('.campaign-step.is-available[aria-disabled="false"]');
+                        next?.focus({ preventScroll: true });
                     };
                     group.addEventListener("click", activate);
                     group.addEventListener("keydown", event => {
@@ -150,7 +156,11 @@ export async function initialiseCampaignTracker() {
                 nodes.appendChild(group);
             });
             svg.append(curves, circles, nodes);
-            map.appendChild(svg);
+            // Swap the map in one operation so its scrollable area never collapses.
+            const { scrollLeft, scrollTop } = map;
+            map.replaceChildren(svg);
+            map.scrollLeft = scrollLeft;
+            map.scrollTop = scrollTop;
         }
 
         function renderChoices(progress) {
@@ -170,7 +180,7 @@ export async function initialiseCampaignTracker() {
                 button.disabled = progress.balance <= 0 || Boolean(state.completedAt);
                 button.addEventListener("click", () => {
                     advance(candidates[0]);
-                    document.querySelector(".campaign-choice:not(:disabled)")?.focus();
+                    document.querySelector(".campaign-choice:not(:disabled)")?.focus({ preventScroll: true });
                 });
                 choices.appendChild(button);
             });
@@ -241,6 +251,8 @@ export async function initialiseCampaignTracker() {
         }
 
         document.getElementById("undo-movement").addEventListener("click", () => {
+            const pageX = window.scrollX;
+            const pageY = window.scrollY;
             try {
                 state = readCampaignState(localStorage);
                 assertCampaignEditable(localStorage, state.id);
@@ -248,6 +260,7 @@ export async function initialiseCampaignTracker() {
                 render();
                 status.textContent = "Last move undone. Its movement point is available again.";
             } catch (problem) { error(problem.message); }
+            finally { window.scrollTo(pageX, pageY); }
         });
         document.getElementById("export-campaign").addEventListener("click", () => {
             try {

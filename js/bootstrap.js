@@ -29,4 +29,4 @@ function showAppLoadError(error) {
     }
 }
 
-import("./app.js?v=0f4147c0c5d0").catch(showAppLoadError);
+import("./app.js?v=e8f9789fcdec").catch(showAppLoadError);
