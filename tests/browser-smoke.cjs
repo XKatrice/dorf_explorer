@@ -112,11 +112,11 @@ async function main() {
         assert(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), 'Mobile page overflows');
         assert.equal(await evaluate("getComputedStyle(document.querySelector('.main-menu')).gridTemplateColumns.split(' ').length"), 2);
         await evaluate("const map=document.getElementById('campaign-map');map.scrollLeft=150;map.scrollTop=map.scrollHeight;map.scrollIntoView({block:'center'})");
-        const mapPosition = await evaluate("({left:document.getElementById('campaign-map').scrollLeft,top:document.getElementById('campaign-map').scrollTop,pageY:window.scrollY})");
+        const mapPosition = await evaluate("({left:document.getElementById('campaign-map').scrollLeft,top:document.getElementById('campaign-map').scrollTop,mapY:document.getElementById('campaign-map').getBoundingClientRect().top})");
         assert(mapPosition.left > 0 && mapPosition.top > 0, 'Regression test must start with the map scrolled in both directions');
         for (const activation of ["new MouseEvent('click',{bubbles:true})", "new KeyboardEvent('keydown',{key:'Enter',bubbles:true})"]) {
             await evaluate(`document.querySelector('[data-step="box2-circus:1"]').dispatchEvent(${activation})`);
-            const after = await evaluate("({left:document.getElementById('campaign-map').scrollLeft,top:document.getElementById('campaign-map').scrollTop,pageY:window.scrollY})");
+            const after = await evaluate("({left:document.getElementById('campaign-map').scrollLeft,top:document.getElementById('campaign-map').scrollTop,mapY:document.getElementById('campaign-map').getBoundingClientRect().top})");
             assert.deepEqual(after, mapPosition, 'Choosing a circle must preserve map and page scrolling');
             assert.equal(await evaluate("document.getElementById('movement-spent').textContent"), '9');
             await evaluate("document.getElementById('undo-movement').click()");
@@ -125,6 +125,25 @@ async function main() {
             assert.equal(undone.top, mapPosition.top);
         }
         console.log('PASS: mobile map and page scroll positions remain unchanged after circle clicks, keyboard selection, and undo.');
+        await send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
+        async function tapCircle(id, expectedSpent) {
+            await evaluate(`window.mapBeforeTap=document.querySelector('#campaign-map svg');window.circleBeforeTap=document.querySelector('[data-step="${id}"]')`);
+            const before = await evaluate("({left:document.getElementById('campaign-map').scrollLeft,top:document.getElementById('campaign-map').scrollTop,mapY:document.getElementById('campaign-map').getBoundingClientRect().top})");
+            const point = await evaluate("(()=>{const rect=window.circleBeforeTap.getBoundingClientRect();return {x:rect.x+rect.width/2,y:rect.y+rect.height/2}})()");
+            assert(point.x > 0 && point.x < 390 && point.y > 0 && point.y < 844, 'Touch target must be on screen');
+            await send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: point.x, y: point.y }] });
+            await send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+            await wait(`document.getElementById('movement-spent').textContent === '${expectedSpent}'`);
+            await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+            const after = await evaluate("({left:document.getElementById('campaign-map').scrollLeft,top:document.getElementById('campaign-map').scrollTop,mapY:document.getElementById('campaign-map').getBoundingClientRect().top})");
+            assert.deepEqual(after, before, 'Touch tap must preserve the visible map position');
+            assert.equal(await evaluate("window.mapBeforeTap===document.querySelector('#campaign-map svg') && window.circleBeforeTap===document.querySelector('[data-step=\"' + window.circleBeforeTap.getAttribute('data-step') + '\"]')"), true, 'Touch taps must update existing map elements');
+        }
+        await tapCircle('box2-circus:1', 9);
+        await evaluate("document.getElementById('undo-movement').click()");
+        for (let index = 2; index <= 4; index++) await tapCircle(`box2-warehouse:${index}`, 7 + index);
+        for (let index = 0; index < 3; index++) await evaluate("document.getElementById('undo-movement').click()");
+        console.log('PASS: real touch taps preserve map elements and the visible position, including unlocking a new branch.');
         const mobile = await send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(output, 'campaign-mobile.png'), Buffer.from(mobile.data, 'base64'));
         console.log('PASS: mobile layout fits 390px; screenshots saved.');

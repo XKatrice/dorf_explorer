@@ -8,6 +8,8 @@ Movement earned is calculated from each saved game's current total using `game_r
 
 The tree follows the supplied printed sheet: Box 1, Box 2, the branching achievement-card paths, and three Red Heart circles. Only circles cost movement points. A circle is selectable when connected to the explored tree, including when approaching a path from its far end. The path buttons provide the same actions as the map for keyboard and mobile use.
 
+Movement updates change the existing SVG circles and hexes in place. Touch taps do not move focus to another circle. The map retains its internal scroll offsets and its position on screen, including when unlock messages or available-path buttons change the layout above it. Keyboard navigation still advances focus without automatic scrolling.
+
 Default circle counts match the player's confirmed campaign sheet (map revision 2). The three heart markers sit on the fourth circle of their respective paths. Older campaigns retain valid connected moves and custom path counts; obsolete defaults are corrected, and any moves made invalid by the corrected tree are refunded to the available balance with an on-screen explanation. Loading alone does not overwrite the saved record. The former path-length editor has been removed from the page.
 
 Campaign progress and player names are saved automatically under `dorfExplorerCampaign` in local storage, separately from the existing `dorfExplorerGames` history. Undo removes the latest move and refunds its point. There is one active campaign per browser, plus previous campaigns saved under `dorfExplorerCampaignArchives`.

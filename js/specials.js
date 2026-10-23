@@ -1,5 +1,5 @@
-import { calculateScore } from "./scoring.js?v=e8f9789fcdec";
-import { readScoreInput, isValidScore, scoreInputMessage, reportScoreError, clearScoreError } from "./validation.js?v=e8f9789fcdec";
+import { calculateScore } from "./scoring.js?v=a8d45964ab16";
+import { readScoreInput, isValidScore, scoreInputMessage, reportScoreError, clearScoreError } from "./validation.js?v=a8d45964ab16";
 
 
 

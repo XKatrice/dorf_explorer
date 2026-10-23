@@ -1,5 +1,5 @@
-import { calculateScore } from "./scoring.js?v=e8f9789fcdec";
-import { readScoreInput } from "./validation.js?v=e8f9789fcdec";
+import { calculateScore } from "./scoring.js?v=a8d45964ab16";
+import { readScoreInput } from "./validation.js?v=a8d45964ab16";
 
 export function initialiseFlags() {
     ["forest", "grain", "village"].forEach(function (kind) {

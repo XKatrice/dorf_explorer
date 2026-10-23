@@ -1,10 +1,10 @@
-import { readGames, readStoredJSON, writeStoredJSON } from "./data-store.js?v=e8f9789fcdec";
-import { loadGameRankings } from "./rankings.js?v=e8f9789fcdec";
-import { ARCHIVE_KEY, ensureCampaignStarted, assertCampaignAssociation, assertCampaignEditable, buildCampaignFile, startNewCampaign, downloadCampaignFile, parseCampaignFile, importCampaignFile } from "./campaign-files.js?v=e8f9789fcdec";
+import { readGames, readStoredJSON, writeStoredJSON } from "./data-store.js?v=a8d45964ab16";
+import { loadGameRankings } from "./rankings.js?v=a8d45964ab16";
+import { ARCHIVE_KEY, ensureCampaignStarted, assertCampaignAssociation, assertCampaignEditable, buildCampaignFile, startNewCampaign, downloadCampaignFile, parseCampaignFile, importCampaignFile } from "./campaign-files.js?v=a8d45964ab16";
 import {
     CAMPAIGN_KEY, CAMPAIGN_NODES, CAMPAIGN_PATHS, readCampaignState,
     movementEarned, campaignProgress, campaignAchievements, spendMovement, pathLength, stepId
-} from "./campaign-model.js?v=e8f9789fcdec";
+} from "./campaign-model.js?v=a8d45964ab16";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 const nodeById = new Map(CAMPAIGN_NODES.map(node => [node.id, node]));
@@ -68,9 +68,11 @@ export async function initialiseCampaignTracker() {
             status.textContent = message;
         }
 
-        function advance(id) {
+        function advance(id, preserveMapView = false) {
             const pageX = window.scrollX;
             const pageY = window.scrollY;
+            const map = document.getElementById("campaign-map");
+            const mapTop = map.getBoundingClientRect().top;
             try {
                 const before = campaignProgress(state, earned);
                 // Re-read both records to avoid spending from a stale tab balance.
@@ -89,12 +91,37 @@ export async function initialiseCampaignTracker() {
                 render();
                 error(problem.message);
             } finally {
-                window.scrollTo(pageX, pageY);
+                const layoutShift = preserveMapView ? map.getBoundingClientRect().top - mapTop : 0;
+                window.scrollTo(pageX, pageY + layoutShift);
             }
+        }
+
+        function updateMapState(progress) {
+            const spent = new Set(state.moves);
+            document.querySelectorAll("#campaign-map .campaign-step").forEach(group => {
+                const id = group.getAttribute("data-step");
+                const available = progress.availableSteps.has(id);
+                const canSpend = available && progress.balance > 0 && !state.completedAt;
+                group.classList.toggle("is-filled", spent.has(id));
+                group.classList.toggle("is-available", available);
+                group.setAttribute("tabindex", canSpend ? "0" : "-1");
+                group.setAttribute("aria-disabled", String(!canSpend));
+                group.setAttribute("aria-label", `${group.getAttribute("data-label")}: ${spent.has(id) ? "spent" : canSpend ? "spend 1 movement point" : "unavailable"}`);
+            });
+            document.querySelectorAll("#campaign-map .campaign-hex").forEach(group => {
+                const reached = progress.reached.has(group.getAttribute("data-node"));
+                group.classList.toggle("is-unlocked", reached);
+                group.querySelector(".campaign-node-state").textContent = reached ? "✓ Reached" : "Locked";
+            });
         }
 
         function renderMap(progress) {
             const map = document.getElementById("campaign-map");
+            const geometry = CAMPAIGN_PATHS.map(path => `${path.id}:${pathLength(path, state)}`).join("|");
+            if (map.firstElementChild && map.dataset.geometry === geometry) {
+                updateMapState(progress);
+                return;
+            }
             const svg = svgElement("svg", { viewBox: "0 0 900 1410", "aria-label": "Campaign advancement tree. Start at the bottom. Choose a highlighted circle to spend one point." });
             const curves = svgElement("g", { "aria-hidden": "true" });
             const circles = svgElement("g");
@@ -119,24 +146,29 @@ export async function initialiseCampaignTracker() {
                         class: `campaign-step${filled ? " is-filled" : ""}${available ? " is-available" : ""}`,
                         role: "button", tabindex: canSpend ? "0" : "-1", "aria-disabled": String(!canSpend),
                         "aria-label": `${from.name} to ${to.name}, circle ${index} of ${count}${isHeart ? ", unlocks a Red Heart" : ""}: ${filled ? "spent" : canSpend ? "spend 1 movement point" : "unavailable"}`,
-                        "data-step": id
+                        "data-step": id,
+                        "data-label": `${from.name} to ${to.name}, circle ${index} of ${count}${isHeart ? ", unlocks a Red Heart" : ""}`
                     });
                     group.appendChild(svgElement("circle", { cx: x, cy: y, r: 19, class: "campaign-step-hit" }));
                     group.appendChild(svgElement("circle", { cx: x, cy: y, r: 8 }));
                     if (isHeart) group.appendChild(svgElement("text", { x, y: y + 5, class: "campaign-heart", "aria-hidden": "true" }, "♥"));
-                    const activate = () => {
-                        if (!canSpend) return;
-                        advance(id);
+                    const activate = (keyboard = false) => {
+                        if (group.getAttribute("aria-disabled") === "true") return;
+                        advance(id, true);
+                        if (!keyboard) return;
                         const path = id.split(":")[0];
                         const next = document.querySelector(`.campaign-step.is-available[aria-disabled="false"][data-step^="${path}:"]`)
                             || document.querySelector('.campaign-step.is-available[aria-disabled="false"]');
                         next?.focus({ preventScroll: true });
                     };
-                    group.addEventListener("click", activate);
+                    group.addEventListener("click", event => {
+                        event.preventDefault();
+                        activate();
+                    });
                     group.addEventListener("keydown", event => {
                         if (event.key === "Enter" || event.key === " ") {
                             event.preventDefault();
-                            activate();
+                            activate(true);
                         }
                     });
                     circles.appendChild(group);
@@ -145,7 +177,7 @@ export async function initialiseCampaignTracker() {
 
             CAMPAIGN_NODES.forEach(node => {
                 const reached = progress.reached.has(node.id);
-                const group = svgElement("g", { class: `campaign-hex${reached ? " is-unlocked" : ""}` });
+                const group = svgElement("g", { class: `campaign-hex${reached ? " is-unlocked" : ""}`, "data-node": node.id });
                 const points = [[-76, 0], [-54, -45], [54, -45], [76, 0], [54, 45], [-54, 45]]
                     .map(([x, y]) => `${node.x + x},${node.y + y}`).join(" ");
                 group.appendChild(svgElement("polygon", { points }));
@@ -161,6 +193,7 @@ export async function initialiseCampaignTracker() {
             map.replaceChildren(svg);
             map.scrollLeft = scrollLeft;
             map.scrollTop = scrollTop;
+            map.dataset.geometry = geometry;
         }
 
         function renderChoices(progress) {
@@ -253,6 +286,9 @@ export async function initialiseCampaignTracker() {
         document.getElementById("undo-movement").addEventListener("click", () => {
             const pageX = window.scrollX;
             const pageY = window.scrollY;
+            const map = document.getElementById("campaign-map");
+            const mapTop = map.getBoundingClientRect().top;
+            const mapVisible = mapTop < window.innerHeight && map.getBoundingClientRect().bottom > 0;
             try {
                 state = readCampaignState(localStorage);
                 assertCampaignEditable(localStorage, state.id);
@@ -260,7 +296,10 @@ export async function initialiseCampaignTracker() {
                 render();
                 status.textContent = "Last move undone. Its movement point is available again.";
             } catch (problem) { error(problem.message); }
-            finally { window.scrollTo(pageX, pageY); }
+            finally {
+                const layoutShift = mapVisible ? map.getBoundingClientRect().top - mapTop : 0;
+                window.scrollTo(pageX, pageY + layoutShift);
+            }
         });
         document.getElementById("export-campaign").addEventListener("click", () => {
             try {

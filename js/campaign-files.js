@@ -1,6 +1,6 @@
-import { CAMPAIGN_KEY, readCampaignState, campaignAchievements, campaignProgress, movementEarned } from "./campaign-model.js?v=e8f9789fcdec";
-import { findGameRanking } from "./rankings.js?v=e8f9789fcdec";
-import { readGames, readStoredJSON, writeStoredJSON, commitStoredRecords } from "./data-store.js?v=e8f9789fcdec";
+import { CAMPAIGN_KEY, readCampaignState, campaignAchievements, campaignProgress, movementEarned } from "./campaign-model.js?v=a8d45964ab16";
+import { findGameRanking } from "./rankings.js?v=a8d45964ab16";
+import { readGames, readStoredJSON, writeStoredJSON, commitStoredRecords } from "./data-store.js?v=a8d45964ab16";
 
 export const ARCHIVE_KEY = "dorfExplorerCampaignArchives";
 
