@@ -1,4 +1,5 @@
 import { calculateScore } from "./scoring.js";
+import { readScoreInput, isValidScore, scoreInputMessage, reportScoreError, clearScoreError } from "./validation.js";
 
 
 
@@ -11,8 +12,10 @@ function calculateTaskTotal(scores, multiplier) {
 }
 
 
-function initialiseTaskEntry(config) {
-    const scores = [];
+function initialiseSavedTaskEntry(config, savedGame) {
+    const savedTotal = Number(savedGame?.scores[config.pointsInputId]) || 0;
+    const scores = [...(savedGame?.entries?.tasks[config.pointsInputId]
+        ?? (savedTotal > 0 ? [savedTotal / config.multiplier] : []))];
 
     const form = document.getElementById(config.formId);
     const input = document.getElementById(config.inputId);
@@ -27,6 +30,7 @@ function initialiseTaskEntry(config) {
     if (!form) {
         return;
     }
+    input.dataset.scoreMultiplier = String(config.multiplier);
 
     function renderScores() {
         scoreList.innerHTML = "";
@@ -68,6 +72,7 @@ function initialiseTaskEntry(config) {
         subtotalDisplay.textContent = subtotal;
         totalDisplay.textContent = finalTotal;
         pointsInput.value = finalTotal;
+        pointsInput.dataset.taskScores = JSON.stringify(scores);
 
         renderScores();
         calculateScore();
@@ -76,11 +81,19 @@ function initialiseTaskEntry(config) {
     form.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const score = Number(input.value);
+        const score = readScoreInput(input, { allowEmpty: false });
 
-        if (score <= 0) {
+        if (score === null || score <= 0) {
+            reportScoreError(scoreInputMessage(input), input);
             return;
         }
+
+        if (!isValidScore(calculateTaskTotal([...scores, score], config.multiplier))) {
+            reportScoreError("This task total is too large. Enter a smaller score.", input);
+            return;
+        }
+        clearScoreError();
+        input.setAttribute("aria-invalid", "false");
 
         scores.push(score);
 
@@ -89,6 +102,7 @@ function initialiseTaskEntry(config) {
 
         updateScore();
     });
+    updateScore();
 }
 
 function initialiseCountEntry(config) {
@@ -97,15 +111,14 @@ function initialiseCountEntry(config) {
     if (!input) {
         return;
     }
+    input.dataset.scoreMultiplier = String(config.multiplier);
 
     const totalDisplay = document.getElementById(config.totalId);
     const pointsInput = document.getElementById(config.pointsInputId);
 
     function updateScore() {
-        const count = Number(input.value);
-        const points = input.validity.valid && Number.isInteger(count) && count >= 0
-            ? count * config.multiplier
-            : 0;
+        const count = readScoreInput(input);
+        const points = count === null ? 0 : count * config.multiplier;
 
         totalDisplay.textContent = points;
         pointsInput.value = points;
@@ -129,15 +142,23 @@ function initialiseHearts() {
 
     const totalDisplay = document.getElementById("hearts-total");
     const pointsInput = document.getElementById("heart_points");
+    const goldenHeartInput = document.getElementById("golden-heart-edges");
+    const goldenHeartTotal = document.getElementById("golden-heart-total");
+    let lastGoldenHeartValue = "";
 
     function updateScore() {
-        const total = inputs.reduce(function (sum, input) {
-            const score = Number(input.value);
-            const validScore = input.validity.valid && Number.isInteger(score)
-                && score >= 0 && score <= 6;
+        if (readScoreInput(goldenHeartInput) === null) {
+            goldenHeartInput.value = lastGoldenHeartValue;
+        } else {
+            lastGoldenHeartValue = goldenHeartInput.value;
+        }
+        const edges = readScoreInput(goldenHeartInput) ?? 0;
+        const goldenPoints = edges * 2;
+        goldenHeartTotal.textContent = goldenPoints;
 
-            return sum + (validScore ? score : 0);
-        }, 0);
+        const total = inputs.reduce(function (sum, input) {
+            return sum + (readScoreInput(input) ?? 0);
+        }, goldenPoints);
 
         totalDisplay.textContent = total;
         pointsInput.value = total;
@@ -147,11 +168,29 @@ function initialiseHearts() {
     inputs.forEach(function (input) {
         input.addEventListener("input", updateScore);
     });
+    goldenHeartInput.addEventListener("input", updateScore);
     updateScore();
 }
 
-export function initialiseSpecials() {
+export function initialiseSpecials(savedGame = null) {
+    function initialiseTaskEntry(config) {
+        initialiseSavedTaskEntry(config, savedGame);
+    }
     initialiseHearts();
+
+    initialiseCountEntry({
+        inputId: "balloon-distance",
+        totalId: "balloon-total",
+        pointsInputId: "balloon_points",
+        multiplier: 2
+    });
+
+    initialiseCountEntry({
+        inputId: "hill-count",
+        totalId: "hill-total",
+        pointsInputId: "hill_points",
+        multiplier: 2
+    });
 
     initialiseCountEntry({
         inputId: "signalman-count",

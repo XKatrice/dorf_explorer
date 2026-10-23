@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign · Dorf Explorer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<img class="banner" src="assets/dorfexplorerbanner.png" alt="Dorf Explorer">
+<nav class="main-menu" aria-label="Main navigation">
+    <a class="menu-link" href="index.html"><img src="assets/home.png" alt="" class="menu-icon"><span>Home</span></a>
+    <a class="menu-link" href="scores.html"><img src="assets/scorecard.png" alt="" class="menu-icon"><span>Scorecard</span></a>
+    <a class="menu-link" href="campaign.html"><img src="assets/load.png" alt="" class="menu-icon"><span>Game History</span></a>
+    <a class="menu-link" href="campaign-tracker.html" aria-current="page"><img src="assets/campaign.png" alt="" class="menu-icon"><span>Campaign</span></a>
+</nav>
+<main id="campaign-tracker" class="campaign-tracker">
+    <header class="campaign-heading">
+        <div><p class="eyebrow">Your village, one step further</p><h1>Campaign</h1>
+        <p>Turn your game results into new discoveries. Choose where your movement points take you.</p></div>
+        <a class="button-link" href="campaign.html">View Game History →</a>
+    </header>
+    <p id="campaign-loading" role="status">Loading your campaign…</p>
+    <div id="campaign-content" hidden>
+        <section class="campaign-management" aria-label="Campaign details">
+            <dl class="campaign-statistics">
+                <div><dt>Date started</dt><dd id="campaign-started"></dd></div>
+                <div><dt>Date completed</dt><dd id="campaign-completed">In progress</dd></div>
+                <div><dt>Games played</dt><dd id="campaign-game-count">0</dd></div>
+                <div><dt>Total score</dt><dd id="campaign-total-score">0</dd></div>
+                <div><dt>Highest game score</dt><dd id="campaign-high-score">No games yet</dd></div>
+            </dl>
+            <div class="campaign-management-actions">
+                <button type="button" id="export-campaign">Save campaign to file</button>
+                <button type="button" id="complete-campaign">Mark campaign complete</button>
+                <button type="button" id="new-campaign">Start new campaign</button>
+                <label class="button-link campaign-import-label" for="import-campaign">Import campaign file</label>
+                <input type="file" id="import-campaign" accept=".json,application/json" class="campaign-import-input">
+            </div>
+        </section>
+        <section class="movement-wallet" aria-label="Movement point balance">
+            <div class="movement-balance"><span class="eyebrow">Available to spend</span><strong id="movement-available">0</strong><span>movement points</span></div>
+            <div class="movement-totals"><p><strong id="movement-earned">0</strong> earned from Game History</p><p><strong id="movement-spent">0</strong> spent on the tree</p><button type="button" id="undo-movement" disabled>↶ Undo last move</button></div>
+            <div class="campaign-discoveries"><p><strong id="campaign-unlocked-count">0</strong> discoveries reached</p><p><strong id="campaign-heart-count">0</strong> / 3 Red Hearts</p><a class="button-link" href="scores.html">Score a new game →</a></div>
+        </section>
+        <p id="campaign-notice" class="campaign-notice" hidden></p>
+        <p id="campaign-status" class="campaign-status" role="status" aria-live="polite"></p>
+        <section class="campaign-next" aria-labelledby="next-move-heading">
+            <div><p class="eyebrow">Choose your next step</p><h2 id="next-move-heading">Where shall we go?</h2><p>Each click spends 1 point. You can split your points between any connected paths.</p></div>
+            <div id="campaign-choices" class="campaign-choices"></div>
+        </section>
+        <div class="campaign-layout">
+            <section class="campaign-board" aria-labelledby="tree-heading">
+                <div class="campaign-board-heading"><h2 id="tree-heading">Your campaign tree</h2><span>Start at the bottom · Follow the highlighted circles</span></div>
+                <p class="campaign-legend"><span>○ Unvisited</span><span>● Spent</span><span>◉ Next step</span><span>♥ Red Heart</span></p>
+                <div id="campaign-map" class="campaign-map"></div>
+            </section>
+            <aside class="campaign-sidebar">
+                <section class="campaign-panel"><h2>Campaign Achievements</h2><p>Unlock dates are recorded as you reach each achievement, box or Red Heart.</p><ul id="campaign-unlocks" class="campaign-achievements"></ul></section>
+                <section class="campaign-panel"><h2>Campaign notes</h2><label for="campaign-players">Player names</label><input type="text" id="campaign-players" maxlength="200" placeholder="Who is exploring?"><p>Progress is saved automatically in this browser. All games in Game History contribute to this campaign.</p></section>
+                <section class="campaign-panel"><h2>Archived campaigns</h2><p>Previous campaigns are kept here when you start a new one. Download a file to keep a separate copy.</p><p id="archive-status" role="alert"></p><ul id="campaign-archives" class="campaign-archive-list"></ul></section>
+            </aside>
+        </div>
+    </div>
+</main>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

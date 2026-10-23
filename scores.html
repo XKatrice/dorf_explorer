@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -8,23 +9,13 @@
     <h1>Dorf Romantik Scorecard</h1>
 
 <nav class="main-menu" aria-label="Main navigation">
-
-    <a class="menu-link" href="index.html">
-        <img src="assets/home.png" alt="" class="menu-icon">
-        <span>Home</span>
-    </a>
-
-    <a class="menu-link" href="scores.html">
-        <img src="assets/scorecard.png" alt="" class="menu-icon">
-        <span>Scorecard</span>
-    </a>
-
-    <a class="menu-link" href="campaign.html">
-        <img src="assets/campaign.png" alt="" class="menu-icon">
-        <span>Campaign</span>
-    </a>
+    <a class="menu-link" href="index.html"><img src="assets/home.png" alt="" class="menu-icon"><span>Home</span></a>
+    <a class="menu-link" href="scores.html" aria-current="page"><img src="assets/scorecard.png" alt="" class="menu-icon"><span>Scorecard</span></a>
+    <a class="menu-link" href="campaign.html"><img src="assets/load.png" alt="" class="menu-icon"><span>Game History</span></a>
+    <a class="menu-link" href="campaign-tracker.html"><img src="assets/campaign.png" alt="" class="menu-icon"><span>Campaign</span></a>
 
 </nav>
+<p id="editing-status" role="status" hidden></p>
 
 <div class="score-grid">
     <div class="score-item special-tile">
@@ -89,7 +80,7 @@
 
 
 
-    
+
     <div class="score-item special-tile">
     <img
         class="score-icon"
@@ -149,7 +140,7 @@
         value="0"
     >
 </div>
-    
+
     <div class="score-item special-tile">
     <img
         class="score-icon"
@@ -209,7 +200,7 @@
         value="0"
     >
 </div>
-    
+
     <div class="score-item special-tile">
     <img
         class="score-icon"
@@ -269,7 +260,7 @@
         value="0"
     >
 </div>
-    
+
     <div class="score-item special-tile">
     <img
         class="score-icon"
@@ -332,48 +323,96 @@
     <p class="total">Tasks Total: <span id="task_points">0</span></p>
 </div>
 
- 
+
 
 
 <div class="score-grid">
     <h3>Flags, Harbour and Train Station</h3>
-    
-    <div class="score-item">
+    <div class="score-item special-tile flag-card">
         <div class="icon-stack">
-            <img class="base-icon" src="assets/forest-tasks.png" alt="Picture of Trees">
-            <img class="overlay-icon" src="assets/flags.png" alt="Picture of Flags">
+            <img class="base-icon" src="assets/forest-tasks.png" alt="">
+            <img class="overlay-icon" src="assets/flags.png" alt="">
         </div>
-        <label for="flag_forest">Forest Flags</label>
-        <input class="score-input" type="number" id="flag_forest" min="0" placeholder="0">
+        <h3>Forest Flags</h3>
+        <div class="flag-inputs">
+            <div class="flag-entry">
+                <label for="flag-forest-1"><img class="mini-icon" src="assets/flags.png" alt="Forest Flag 1"></label>
+                <input type="number" id="flag-forest-1" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+            <div class="flag-entry">
+                <label for="flag-forest-2"><img class="mini-icon" src="assets/flags.png" alt="Forest Flag 2"></label>
+                <input type="number" id="flag-forest-2" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+            <div class="flag-entry">
+                <label for="flag-forest-3"><img class="mini-icon" src="assets/flags.png" alt="Forest Flag 3"></label>
+                <input type="number" id="flag-forest-3" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+        </div>
+        <div class="special-calculation">
+            <p>Total: <output id="flag-forest-total" aria-live="polite">0</output></p>
+        </div>
+        <input class="score-input" type="hidden" id="flag_forest" value="0">
     </div>  
-
-    <div class="score-item">
+    <div class="score-item special-tile flag-card">
         <div class="icon-stack">
-            <img class="base-icon" src="assets/field-tasks.png" alt="Picture of fields">
-            <img class="overlay-icon" src="assets/flags.png" alt="Picture of Flags">
+            <img class="base-icon" src="assets/field-tasks.png" alt="">
+            <img class="overlay-icon" src="assets/flags.png" alt="">
         </div>
-        <label for="flag_grain">Grain Flags</label>
-        <input class="score-input" type="number" id="flag_grain" min="0" placeholder="0">
+        <h3>Grain Flags</h3>
+        <div class="flag-inputs">
+            <div class="flag-entry">
+                <label for="flag-grain-1"><img class="mini-icon" src="assets/flags.png" alt="Grain Flag 1"></label>
+                <input type="number" id="flag-grain-1" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+            <div class="flag-entry">
+                <label for="flag-grain-2"><img class="mini-icon" src="assets/flags.png" alt="Grain Flag 2"></label>
+                <input type="number" id="flag-grain-2" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+            <div class="flag-entry">
+                <label for="flag-grain-3"><img class="mini-icon" src="assets/flags.png" alt="Grain Flag 3"></label>
+                <input type="number" id="flag-grain-3" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+        </div>
+        <div class="special-calculation">
+            <p>Total: <output id="flag-grain-total" aria-live="polite">0</output></p>
+        </div>
+        <input class="score-input" type="hidden" id="flag_grain" value="0">
     </div>  
-
-    <div class="score-item">
+    <div class="score-item special-tile flag-card">
         <div class="icon-stack">
-            <img class="base-icon" src="assets/village-tasks.png" alt="Picture of village">
-            <img class="overlay-icon" src="assets/flags.png" alt="Picture of Flags">
+            <img class="base-icon" src="assets/village-tasks.png" alt="">
+            <img class="overlay-icon" src="assets/flags.png" alt="">
         </div>
-        <label for="flag_village">Village Flags</label>
-        <input class="score-input" type="number" id="flag_village" min="0" placeholder="0">
+        <h3>Village Flags</h3>
+        <div class="flag-inputs">
+            <div class="flag-entry">
+                <label for="flag-village-1"><img class="mini-icon" src="assets/flags.png" alt="Village Flag 1"></label>
+                <input type="number" id="flag-village-1" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+            <div class="flag-entry">
+                <label for="flag-village-2"><img class="mini-icon" src="assets/flags.png" alt="Village Flag 2"></label>
+                <input type="number" id="flag-village-2" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+            <div class="flag-entry">
+                <label for="flag-village-3"><img class="mini-icon" src="assets/flags.png" alt="Village Flag 3"></label>
+                <input type="number" id="flag-village-3" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+        </div>
+        <div class="special-calculation">
+            <p>Total: <output id="flag-village-total" aria-live="polite">0</output></p>
+        </div>
+        <input class="score-input" type="hidden" id="flag_village" value="0">
     </div>
-     
+
     <div class="score-item">
          <img class="score-icon" src="assets/harbour.png" alt="">
         <label for="harbour">Harbour</label>
         <input class="score-input" type="number" id="harbour" min="0" placeholder="0">
         <p>If the Harbour is on a closed off river, gain 1 point for each of that river's tiles</p>
     </div>
-    
+
     <div class="score-item">
-    
+
          <img class="score-icon" src="assets/train-station.png" alt="">
         <label for="train_station">Train Station</label>
         <input class="score-input" type="number" id="train_station" min="0" placeholder="0">
@@ -381,7 +420,7 @@
     </div> 
     <p class="total">Flags Total: <span id="flag_points">0</span></p>  
 </div>
- 
+
 
 
 
@@ -408,12 +447,11 @@
 
 
 <div class="score-grid">
-    <h3>Unlocked Specials</h3>
+    <h3>Specials</h3>
     <div class="score-item special-tile">
         <img class="score-icon" src="assets/heart-special.png" alt="">
         <h3>Hearts</h3>
-
-            <p>Hearts score for each perfectly aligned tile surrounding them, up to a maximum of 6 points around each heart.</p>
+            <p>Hearts score for each perfectly aligned tile surrounding them, up to a maximum of 6 points around each heart. The Golden Heart scores 2 points per edge, up to a maximum of 12 points.</p>
 
         <div class="special-entry">
             <div class="heart-entry">
@@ -428,16 +466,21 @@
                 <label for="heart-3-score"><img class="mini-icon" src="assets/heart-special.png" alt="Heart 3"></label>
                 <input type="number" id="heart-3-score" min="0" max="6" step="1" inputmode="numeric" placeholder="0">
             </div>
+            <div class="heart-entry">
+                <label for="golden-heart-edges"><img class="mini-icon golden-heart-icon" src="assets/heart-special.png" alt="Golden Heart edges"></label>
+                <input type="number" id="golden-heart-edges" min="0" max="6" step="1" inputmode="numeric" placeholder="0">
+            </div>
         </div>
 
         <div class="special-calculation">
+            <p>Golden Heart: <output id="golden-heart-total" aria-live="polite">0</output> points</p>
             <p>Total: <output id="hearts-total" aria-live="polite">0</output></p>
         </div>
         <input type="hidden" id="heart_points" class="score-input" value="0">
 
     </div>
 
-    
+
     <div class="score-item special-tile">
 
     <img
@@ -470,7 +513,7 @@
             >
 
             <button type="submit"> Add</button>
-            
+
 
         </div>
 
@@ -757,7 +800,7 @@
         value="0"
     >
 </div>
-    
+
     <div class="score-item">
          <img class="score-icon" src="assets/circus.png">
         <label for="circus">Circus completely surrounded</label>
@@ -802,6 +845,37 @@
 
         <input type="hidden" id="shepherdess_points" class="score-input" value="0">
     </div>
+    <div class="score-item special-tile">
+        <img class="score-icon" src="assets/hill.png" alt="">
+        <h3>Hill</h3>
+        <p>Score 2 points for every task within 2 tiles of the Hill, including tasks that are not completed.</p>
+        <div class="special-entry">
+            <label for="hill-count">Tasks within 2 tiles</label>
+            <div class="special-entry-controls">
+                <input type="number" id="hill-count" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+        </div>
+        <div class="special-calculation">
+            <p>Points per task: 2</p>
+            <p>Total: <output id="hill-total" aria-live="polite">0</output></p>
+        </div>
+        <input type="hidden" id="hill_points" class="score-input" value="0">
+    </div>
+    <div class="score-item special-tile">
+        <img class="score-icon" src="assets/balloon-launch-site.png" alt="">
+        <h3>Balloon Launch Site</h3>
+        <p>Score 2 points per tile the Balloon has travelled from its start tile. Count the tiles along the shortest path.</p>
+        <div class="special-entry">
+            <div class="special-entry-controls">
+                <input type="number" id="balloon-distance" min="0" step="1" inputmode="numeric" placeholder="0">
+            </div>
+        </div>
+        <div class="special-calculation">
+            <p>Points per tile: 2</p>
+            <p>Total: <output id="balloon-total" aria-live="polite">0</output></p>
+        </div>
+        <input type="hidden" id="balloon_points" class="score-input" value="0">
+    </div>
 
     <p class="total">Score from Specials: <span id="special_points">0</span></p>
 </div>
@@ -809,8 +883,19 @@
 
 
 <div>
-    <h2>Scoreboard</h2>
-    
+    <h2 id="scoreboard-heading" tabindex="-1">Scoreboard</h2>
+
+    <div class="score-summary">
+        <h3>Achievement: Construction Site</h3>
+        <p>Total points from tasks: <output id="achievement-task-total" aria-live="polite">0</output> / 157</p>
+        <p>Includes regular tasks and tasks from Harvest Festival, Watchtower, Forest Cabin, Ship and Locomotive at x1. This tracks achievement progress and adds no extra points to your game score.</p>
+    </div>
+    <div class="score-summary">
+        <h3>Achievement: Balloon Launch Site</h3>
+        <p>Score 300 points or more in a single game.</p>
+        <p>Total game score: <output id="achievement-balloon-total" aria-live="polite">0</output> / 300</p>
+        <p><output id="achievement-balloon-status" aria-live="polite">300 points to go</output></p>
+    </div>
     <div class="score-summary">
         <div class="summary-header-row">
             Tasks:<span id="summary_task_points">0</span>
@@ -852,9 +937,9 @@
             Unlocked Specials: <span id="summary_special_points">0</span>
         </div>
         <div class="summary-expand-row">
-            Red Hearts: <span id="summary_redhearts">0</span>
+            Hearts: <span id="summary_redhearts">0</span>
         </div>
-        
+
         <div class="summary-expand-row">
         Harvest  Festival: <span id="summary_harvest">0</span>
 
@@ -893,12 +978,19 @@
         <div class="summary-expand-row">
             Shepherdess: <span id="summary_shepherdess">0</span>
         </div>
+        <div class="summary-expand-row">
+            Hill: <span id="summary_hill">0</span>
+        </div>
+        <div class="summary-expand-row">
+            Balloon Launch Site: <span id="summary_balloon">0</span>
+        </div>
  <p class="total">Grand Total for Game: <span id="total_points">0</span></p>
         </div>
 
 
 
     </div>
+    <p id="score-validation-message" class="score-validation-message" role="alert" hidden></p>
 
     <div class="save-actions">
     <button
@@ -911,9 +1003,9 @@
             alt=""
             class="save-button-icon"
         >
-
-        <span>Save and View Campaign</span>
+        <span>Save and Spend Movement Points</span>
     </button>
+    <a id="cancel-edit" class="delete-game-button" href="campaign.html" hidden>Cancel Editing</a>
 </div>
 </div>
 <script type="module" src="js/app.js" ></script>

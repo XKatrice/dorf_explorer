@@ -1,73 +1,78 @@
+import { readScoreInput, isValidScore } from "./validation.js";
+
 export function calculateScore() {
 
 
 // Tasks Scores 
 
     const forestInput = document.getElementById("forest_tasks");
-    const forestPoints = Number(forestInput.value);
+    const forestPoints = (readScoreInput(forestInput) ?? 0);
 
     const grainInput = document.getElementById("grain_tasks");
-    const grainPoints = Number(grainInput.value);
+    const grainPoints = (readScoreInput(grainInput) ?? 0);
 
     const villageInput = document.getElementById("village_tasks");
-    const villagePoints = Number(villageInput.value);
+    const villagePoints = (readScoreInput(villageInput) ?? 0);
 
     const railInput = document.getElementById("rail_tasks");
-    const railPoints = Number(railInput.value);
+    const railPoints = (readScoreInput(railInput) ?? 0);
 
     const riverInput = document.getElementById("river_tasks");
-    const riverPoints = Number(riverInput.value);
+    const riverPoints = (readScoreInput(riverInput) ?? 0);
 
  // Long river and rail scores 
 
     const longRailInput = document.getElementById("long_rail");
-    const longRailPoints = Number(longRailInput.value);
+    const longRailPoints = (readScoreInput(longRailInput) ?? 0);
 
     const longRiverInput = document.getElementById("long_river");
-    const longRiverPoints = Number(longRiverInput.value);
+    const longRiverPoints = (readScoreInput(longRiverInput) ?? 0);
 
 // Flags scoring
 
     const forestFlagInput = document.getElementById("flag_forest");
-    const forestFlagsPoints = Number(forestFlagInput.value);
+    const forestFlagsPoints = (readScoreInput(forestFlagInput) ?? 0);
 
     const grainFlagInput = document.getElementById("flag_grain");
-    const grainFlagsPoints = Number(grainFlagInput.value);
+    const grainFlagsPoints = (readScoreInput(grainFlagInput) ?? 0);
 
     const villageFlagInput = document.getElementById("flag_village");
-    const villageFlagsPoints = Number(villageFlagInput.value);
+    const villageFlagsPoints = (readScoreInput(villageFlagInput) ?? 0);
 
     const harbourInput = document.getElementById("harbour");
-    const harbourPoints = Number(harbourInput.value);
+    const harbourPoints = (readScoreInput(harbourInput) ?? 0);
 
     const trainStationInput = document.getElementById("train_station");
-    const trainStationPoints = Number(trainStationInput.value);
+    const trainStationPoints = (readScoreInput(trainStationInput) ?? 0);
 
 // Unlocked Scoring
 
     const heartsInput = document.getElementById("heart_points");
-    const heartsPoints = Number(heartsInput.value);
+    const heartsPoints = (readScoreInput(heartsInput) ?? 0);
 
     const watchtowerInput = document.getElementById("watchtower_points");
-    const watchtowerPoints = Number(watchtowerInput.value);
+    const watchtowerPoints = (readScoreInput(watchtowerInput) ?? 0);
 
     const forestCabinInput = document.getElementById("forest_cabin_points");
-    const forestCabinPoints = Number(forestCabinInput.value);
+    const forestCabinPoints = (readScoreInput(forestCabinInput) ?? 0);
 
     const shipInput = document.getElementById("ship_points");
-    const shipPoints = Number(shipInput.value);
+    const shipPoints = (readScoreInput(shipInput) ?? 0);
 
     const locomotiveInput = document.getElementById("locomotive_points");
-    const locomotivePoints = Number(locomotiveInput.value);
+    const locomotivePoints = (readScoreInput(locomotiveInput) ?? 0);
 
     const harvestInput = document.getElementById("harvest_points");
-    const harvestPoints = Number(harvestInput.value);
+    const harvestPoints = (readScoreInput(harvestInput) ?? 0);
 
     const signalmanInput = document.getElementById("signalman_points");
-    const signalmanPoints = Number(signalmanInput.value);
+    const signalmanPoints = (readScoreInput(signalmanInput) ?? 0);
 
     const shepherdessInput = document.getElementById("shepherdess_points");
-    const shepherdessPoints = Number(shepherdessInput.value);
+    const shepherdessPoints = (readScoreInput(shepherdessInput) ?? 0);
+
+    const hillPoints = (readScoreInput(document.getElementById("hill_points")) ?? 0);
+    const balloonPoints = (readScoreInput(document.getElementById("balloon_points")) ?? 0);
 
     const circusInput = document.getElementById("circus");
 
@@ -81,11 +86,15 @@ export function calculateScore() {
 
     const taskTotal = forestPoints + grainPoints + villagePoints + railPoints + riverPoints
 
+    // Achievement progress counts special tasks once; their game scores already include x2.
+    const achievementTaskTotal = taskTotal +
+        (harvestPoints + watchtowerPoints + forestCabinPoints + shipPoints + locomotivePoints) / 2;
+
     const flagTotal = forestFlagsPoints + grainFlagsPoints + villageFlagsPoints + harbourPoints + trainStationPoints
 
     const longTotal = longRailPoints + longRiverPoints
 
-    const specialPoints = heartsPoints + harvestPoints + circusPoints + watchtowerPoints + forestCabinPoints + shipPoints + locomotivePoints + signalmanPoints + shepherdessPoints
+    const specialPoints = heartsPoints + harvestPoints + circusPoints + watchtowerPoints + forestCabinPoints + shipPoints + locomotivePoints + signalmanPoints + shepherdessPoints + hillPoints + balloonPoints
 
     const totalPoints = taskTotal + longTotal + flagTotal + specialPoints;
 
@@ -97,11 +106,20 @@ export function calculateScore() {
     const summaryTaskScoreDisplay = document.getElementById("summary_task_points");
     summaryTaskScoreDisplay.textContent = taskTotal;
 
+    document.getElementById("achievement-task-total").textContent = achievementTaskTotal;
+
     const specialScoreDisplay = document.getElementById("special_points")
     specialScoreDisplay.textContent = specialPoints
 
     const scoreDisplay = document.getElementById("total_points");
-    scoreDisplay.textContent = totalPoints;
+    scoreDisplay.textContent = isValidScore(totalPoints) ? totalPoints : "Total is too large";
+
+    document.getElementById("achievement-balloon-total").textContent = isValidScore(totalPoints) ? totalPoints : "Total is too large";
+    document.getElementById("achievement-balloon-status").textContent = !isValidScore(totalPoints)
+        ? "Reduce scores to calculate achievement progress."
+        : totalPoints >= 300
+        ? "Achievement reached!"
+        : `${300 - totalPoints} ${300 - totalPoints === 1 ? "point" : "points"} to go`;
 
     const flagScoreDisplay = document.getElementById("flag_points");
     flagScoreDisplay.textContent = flagTotal;
@@ -169,10 +187,10 @@ export function calculateScore() {
     const summaryShepherdessDisplay = document.getElementById("summary_shepherdess");
     summaryShepherdessDisplay.textContent = shepherdessPoints;
 
+    document.getElementById("summary_hill").textContent = hillPoints;
+    document.getElementById("summary_balloon").textContent = balloonPoints;
+
     const summaryCircusDisplay = document.getElementById("summary_circus");
     summaryCircusDisplay.textContent = circusPoints;
-
-    
+    return totalPoints;
 }
-
-

@@ -1,5 +1,7 @@
 <html>
 <head>
+    <meta charset="UTF-8">
+    <title>Game History · Dorf Explorer</title>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -8,46 +10,24 @@
 <img class="banner" src="assets/dorfexplorerbanner.png">
   
 <nav class="main-menu" aria-label="Main navigation">
-
-    <a class="menu-link" href="index.html">
-        <img src="assets/home.png" alt="" class="menu-icon">
-        <span>Home</span>
-    </a>
-
-    <a class="menu-link" href="scores.html">
-        <img src="assets/scorecard.png" alt="" class="menu-icon">
-        <span>Scorecard</span>
-    </a>
-
-    <a class="menu-link" href="campaign.html">
-        <img src="assets/campaign.png" alt="" class="menu-icon">
-        <span>Campaign</span>
-    </a>
-
+    <a class="menu-link" href="index.html"><img src="assets/home.png" alt="" class="menu-icon"><span>Home</span></a>
+    <a class="menu-link" href="scores.html"><img src="assets/scorecard.png" alt="" class="menu-icon"><span>Scorecard</span></a>
+    <a class="menu-link" href="campaign.html" aria-current="page"><img src="assets/load.png" alt="" class="menu-icon"><span>Game History</span></a>
+    <a class="menu-link" href="campaign-tracker.html"><img src="assets/campaign.png" alt="" class="menu-icon"><span>Campaign</span></a>
 </nav>
 
-<!--  <div class="score-actions">
 
-    <button type="button" id="new-game">
-        <img src="assets/new.png" alt="" class="menu-icon">
-       <span>New</span>
-    </button>
-
-    <button type="button" id="load-game">
-        <img src="assets/load.png" alt="" class="menu-icon">
-        <span>Load</span>
-    </button>
-
-    <button type="button" id="save-campaign">
-        <img src="assets/save.png" alt="" class="menu-icon">
-        <span>Save Campaign</span>
-    </button>
-
-</div> -->
 
 
 <section class="saved-games">
-    <h2>Game History</h2>
+    <h1>Game History</h1>
+    <section class="history-movement" aria-label="Campaign movement points">
+        <div><span class="eyebrow">Ready for your next step</span><p><strong id="history-movement-available">—</strong> movement points to spend</p>
+        <p><span id="history-movement-earned">—</span> earned · <span id="history-movement-spent">—</span> spent</p></div>
+        <a class="button-link" href="campaign-tracker.html">Open Campaign →</a>
+        <p id="history-movement-note" role="status"></p>
+    </section>
+    <p>Each saved game earns movement points for your Campaign. Open a game to edit its score.</p>
     <div id="saved-games-list"></div>
 </section>
 

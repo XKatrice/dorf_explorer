@@ -1,3 +1,8 @@
+import { readGames, writeStoredJSON, storageFailure } from "./data-store.js";
+import { ensureCampaignStarted, assertCampaignEditable } from "./campaign-files.js";
+import { loadGameRankings, findGameRanking } from "./rankings.js";
+import { initialiseMovementSummary } from "./campaign-tracker.js";
+
 const scoreLabels = {
     forest_tasks: "Forest tasks",
     grain_tasks: "Grain tasks",
@@ -18,39 +23,14 @@ const scoreLabels = {
     ship_points: "Ship",
     locomotive_points: "Locomotive",
     signalman_points: "Signalman",
-    shepherdess_points: "Shepherdess"
+    shepherdess_points: "Shepherdess",
+    hill_points: "Hill",
+    balloon_points: "Balloon Launch Site",
+    circus: "Circus"
 };
 
-
-async function loadGameRankings() {
-    const response = await fetch("game_ranking.csv");
-
-    if (!response.ok) {
-        throw new Error("Could not load game rankings");
-    }
-
-    const csvText = await response.text();
-    const rows = csvText.trim().split("\n");
-
-    // Remove: Score,Title,Movement
-    rows.shift();
-
-    return rows.map(function (row) {
-        const [score, title, movement] = row.split(",");
-
-        return {
-            minimumScore: Number(score.trim()),
-            title: title.trim(),
-            movementPoints: Number(movement.trim())
-        };
-    });
-}
-
-
-function findGameRanking(totalScore, rankings) {
-    return rankings.find(function (ranking) {
-        return totalScore >= ranking.minimumScore;
-    });
+function escapeScoreLabel(value) {
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 }
 
 
@@ -64,12 +44,14 @@ export async function initialiseCampaign() {
 
     const rankings = await loadGameRankings();
 
-    const savedGames =
-        JSON.parse(
-            localStorage.getItem("dorfExplorerGames")
-        ) || [];
+    const campaignId = ensureCampaignStarted(localStorage, readGames(localStorage)).id;
+    const savedGames = readGames(localStorage, campaignId);
 
     savedGamesList.innerHTML = "";
+
+    if (!savedGames.length) {
+        savedGamesList.textContent = "No games saved yet. Use the Scorecard to record your first game.";
+    }
 
     savedGames
         .slice()
@@ -91,8 +73,8 @@ export async function initialiseCampaign() {
 
                         return `
                             <div class="score-breakdown-row">
-                                <dt>${label}</dt>
-                                <dd>${score}</dd>
+                                <dt>${escapeScoreLabel(label)}</dt>
+                                <dd>${scoreId === "circus" ? (score ? 10 : 0) : score}</dd>
                             </div>
                         `;
                     })
@@ -140,6 +122,7 @@ export async function initialiseCampaign() {
                         ${scoreBreakdown}
                     </dl>
                 <div class="saved-game-actions">
+                    <a class="edit-game-link button-link" href="scores.html?edit=${encodeURIComponent(game.id)}">Edit Score</a>
                     <button type="button" class="delete-game-button">
                         Delete this record
                     </button>
@@ -158,18 +141,22 @@ export async function initialiseCampaign() {
         return;
     }
 
-    const remainingGames = savedGames.filter(
+    try {
+    assertCampaignEditable(localStorage, campaignId);
+    const currentGames = readGames(localStorage, campaignId);
+    const remainingGames = currentGames.filter(
         function (savedGame) {
             return savedGame.id !== game.id;
         }
     );
 
-    localStorage.setItem(
-        "dorfExplorerGames",
-        JSON.stringify(remainingGames)
-    );
+    writeStoredJSON(localStorage, "dorfExplorerGames", remainingGames);
 
     gameEntry.remove();
+    initialiseMovementSummary();
+    } catch (error) {
+        document.getElementById("history-movement-note").textContent = storageFailure(error).message;
+    }
 });
             savedGamesList.appendChild(gameEntry);
         });

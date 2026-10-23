@@ -53,7 +53,7 @@ button:hover {
 
 .main-menu {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -158,6 +158,60 @@ button:hover {
 
 .score-item input {
     width: 3rem;
+}
+
+.score-item.flag-card {
+    grid-template-areas:
+        "icon icon"
+        "title title"
+        "entry entry"
+        "calculation calculation"
+        "navigation navigation";
+}
+
+.flag-card > .icon-stack {
+    grid-area: icon;
+    justify-self: center;
+}
+
+.flag-card .overlay-icon {
+    width: 28px;
+}
+
+.flag-inputs {
+    grid-area: entry;
+    display: grid;
+    gap: 0.25rem;
+    justify-self: center;
+}
+
+.flag-entry {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.flag-entry .mini-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.flag-entry label {
+    display: flex;
+    align-items: center;
+}
+
+.next-card-button {
+    grid-column: 1 / -1;
+    justify-self: end;
+    align-self: end;
+    min-height: 44px;
+}
+
+.next-card-button:focus-visible {
+    outline: 3px solid var(--forest);
+    outline-offset: 3px;
 }
 
 .banner {
@@ -418,12 +472,17 @@ details.saved-game {
         "title title"
         "description entry"
         "scores scores"
-        "calculation calculation";
+        "calculation calculation"
+        "navigation navigation";
 
     column-gap: 1.5rem;
     row-gap: 1rem;
 
     align-items: center;
+}
+
+.special-tile > .next-card-button {
+    grid-area: navigation;
 }
 
 .special-tile > .score-icon {
@@ -459,6 +518,10 @@ details.saved-game {
     width: 40px;
     height: 40px;
     object-fit: contain;
+}
+
+.golden-heart-icon {
+    filter: sepia(1) saturate(4);
 }
 
 .special-entry {
@@ -522,9 +585,15 @@ details.saved-game {
 .save-actions {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
 
     margin: 1.5rem 0 2.5rem;
 }
+
+.score-validation-message { color: #9a3f35; text-align: center; }
+.score-item input[aria-invalid="true"] { outline: 2px solid #9a3f35; outline-offset: 2px; }
 
 .save-button {
     display: inline-flex;
@@ -533,7 +602,8 @@ details.saved-game {
     gap: 0.65rem;
 
     width: fit-content;
-    max-width: 15rem;
+    max-width: 100%;
+    box-sizing: border-box;
     min-height: 44px;
 
     padding: 0.7rem 1rem;
@@ -576,7 +646,8 @@ details.saved-game {
 
     #save-game {
         width: fit-content;
-        max-width: 240px;
+        max-width: 100%;
+        white-space: normal;
         min-height: 44px;
 
         padding: 0.6rem 0.9rem;
@@ -595,6 +666,9 @@ details.saved-game {
 
 .saved-game-actions {
     display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
     justify-content: flex-end;
 
     margin-top: 1.25rem;
@@ -613,6 +687,141 @@ details.saved-game {
     color: white;
 }
 
+a.delete-game-button {
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+a.delete-game-button:focus-visible {
+    outline: 3px solid #9a3f35;
+    outline-offset: 3px;
+}
 
 
 
+
+.campaign-tracker {
+    max-width: 1320px;
+    margin: 0 auto 4rem;
+    padding: 0 1rem;
+}
+
+.campaign-management { margin-bottom: 1.5rem; padding: 1.25rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+.campaign-statistics { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin: 0 0 1rem; }
+.campaign-statistics dt { font-size: 0.85rem; margin-bottom: 0.35rem; }
+.campaign-statistics dd { margin: 0; color: var(--forest); font-weight: bold; }
+.campaign-management-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.campaign-management-actions button { min-height: 44px; }
+.campaign-import-label { cursor: pointer; }
+.campaign-import-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.campaign-management-actions:has(.campaign-import-input:focus-visible) .campaign-import-label { outline: 3px solid var(--forest); outline-offset: 3px; }
+.campaign-archive-list { list-style: none; padding: 0 !important; }
+.campaign-archive-list li { margin: 0.75rem 0; }
+.campaign-archive-list button { width: 100%; text-align: left; line-height: 1.5; overflow-wrap: anywhere; }
+
+.campaign-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.campaign-heading h1 { font-size: clamp(2rem, 4vw, 3rem); margin: 0.35rem 0; }
+.campaign-heading p { max-width: 620px; line-height: 1.6; }
+.eyebrow { color: var(--deep-sage); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.campaign-tracker a, .history-movement a { color: var(--forest); }
+
+.movement-wallet, .history-movement {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card);
+}
+
+.movement-balance { display: grid; gap: 0.35rem; }
+.movement-balance > strong { color: var(--forest); font-size: 4.5rem; line-height: 1.1; }
+.movement-totals strong, .campaign-discoveries strong { font-size: 1.3rem; color: var(--forest); }
+.campaign-discoveries { border-left: 1px solid var(--border); padding-left: 2rem; }
+.campaign-status { min-height: 1.5em; line-height: 1.5; }
+.campaign-notice { padding: 1rem; background: #ede1bc; border-radius: 8px; line-height: 1.6; }
+.campaign-next { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; margin-bottom: 2rem; }
+.campaign-next h2 { margin: 0.4rem 0; }
+.campaign-next p { line-height: 1.6; }
+.campaign-choices { display: grid; gap: 0.5rem; }
+.campaign-choice { width: 100%; min-height: 48px; text-align: left; }
+.campaign-tracker button:disabled { opacity: 0.45; cursor: default; }
+.campaign-layout { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 1.5rem; align-items: start; }
+.campaign-board { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: #edf1e8; }
+.campaign-board-heading { padding: 1.5rem 1.5rem 0; }
+.campaign-board-heading h2 { margin: 0 0 0.5rem; }
+.campaign-board-heading span { font-size: 0.9rem; }
+.campaign-legend { display: flex; flex-wrap: wrap; gap: 1rem; padding: 0 1.5rem; font-size: 0.85rem; }
+.campaign-map { overflow: auto; }
+.campaign-map svg { display: block; width: 100%; min-width: 680px; height: auto; }
+.campaign-route { fill: none; stroke: #b6c3a9; stroke-width: 2; }
+.campaign-step { cursor: default; }
+.campaign-step > circle { fill: #fffdf5; stroke: #849178; stroke-width: 2; }
+.campaign-step .campaign-step-hit { fill: transparent; stroke: none; }
+.campaign-step.is-filled > circle:not(.campaign-step-hit) { fill: #587653; stroke: #465c43; }
+.campaign-step.is-available > circle:not(.campaign-step-hit) { stroke: #a66f28; stroke-width: 4; fill: #fff1c5; }
+.campaign-step[aria-disabled="false"] { cursor: pointer; }
+.campaign-step[aria-disabled="false"]:hover > circle:not(.campaign-step-hit),
+.campaign-step:focus > circle:not(.campaign-step-hit) { stroke: #263f25; stroke-width: 5; }
+.campaign-step:focus { outline: none; }
+.campaign-heart { text-anchor: middle; font-size: 15px; fill: #a84c3e; pointer-events: none; }
+.campaign-hex polygon { fill: #dce3d3; stroke: #b8c3aa; stroke-width: 2; }
+.campaign-hex text { fill: #53604b; text-anchor: middle; font-family: Georgia, serif; }
+.campaign-node-kind { font-size: 9px; letter-spacing: 1px; }
+.campaign-node-name { font-size: 16px; font-weight: bold; }
+.campaign-node-state { font-size: 11px; }
+.campaign-hex.is-unlocked polygon { fill: #465c43; stroke: #30452d; }
+.campaign-hex.is-unlocked text { fill: #fffdf5; }
+.campaign-sidebar { display: grid; gap: 1rem; }
+.campaign-panel { padding: 1.25rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+.campaign-panel h2 { font-size: 1.25rem; margin: 0 0 0.75rem; }
+.campaign-panel p, .campaign-panel li { line-height: 1.65; font-size: 0.95rem; }
+.campaign-panel ul { padding-left: 1.25rem; }
+.campaign-panel .campaign-achievements { padding: 0; margin: 0; list-style: none; }
+.campaign-achievement { display: grid; gap: 0.2rem; padding: 0.7rem 0; border-bottom: 1px solid var(--border); }
+.campaign-achievement:last-child { border-bottom: 0; }
+.campaign-achievement > :last-child { font-size: 0.8rem; color: #686b61; }
+.campaign-achievement.is-unlocked > :first-child { font-weight: bold; color: var(--forest); }
+.campaign-achievement.is-unlocked > :first-child::before { content: "✓ "; }
+.campaign-panel label { display: grid; gap: 0.4rem; }
+.campaign-panel input { padding: 0.65rem; max-width: 100%; box-sizing: border-box; border: 1px solid var(--border); border-radius: 6px; font: inherit; background: #fff; color: var(--text); }
+#campaign-players { width: 100%; margin-top: 0.5rem; }
+.campaign-panel summary { cursor: pointer; color: var(--forest); line-height: 1.5; }
+.history-movement { margin: 1.5rem 0; }
+.history-movement strong { font-size: 2rem; color: var(--forest); }
+#history-movement-note:empty { display: none; }
+.button-link { display: inline-block; background: var(--sage); color: var(--card) !important; padding: 0.85rem 1.1rem; border-radius: 6px; text-decoration: none; }
+.button-link:hover { background: var(--deep-sage); }
+.campaign-tracker :is(button, a, input, summary):focus-visible, .button-link:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
+.main-menu .menu-link[aria-current="page"] { text-decoration: underline; text-underline-offset: 0.35rem; }
+
+@media (max-width: 950px) {
+    .campaign-layout { grid-template-columns: minmax(0, 1fr); }
+    .campaign-sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .campaign-sidebar > details { grid-column: 1 / -1; }
+}
+
+@media (max-width: 700px) {
+    .main-menu { grid-template-columns: repeat(2, 1fr); padding: 1rem; gap: 1rem; }
+    .main-menu .menu-link { grid-template-rows: 70px auto; }
+    .main-menu .menu-icon { max-width: 70px; height: 70px; }
+    .campaign-heading { flex-direction: column; align-items: flex-start; gap: 0; }
+    .movement-wallet, .history-movement { padding: 1.25rem; gap: 1.25rem; }
+    .movement-balance { width: 100%; }
+    .campaign-discoveries { border: 0; padding: 0; }
+    .campaign-next, .campaign-sidebar { grid-template-columns: minmax(0, 1fr); }
+    .campaign-next { gap: 0.5rem; }
+    .campaign-map { max-height: 720px; }
+}
