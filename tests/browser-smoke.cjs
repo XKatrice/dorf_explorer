@@ -11,9 +11,18 @@ const output = fs.mkdtempSync(path.join(os.tmpdir(), 'dorf-campaign-qa-'));
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 const browserPath = path.join(process.env['ProgramFiles(x86)'], 'Microsoft/Edge/Application/msedge.exe');
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.csv': 'text/csv' };
+const simulateStaleAssets = process.argv.includes('--stale-assets');
+let blockApp = false;
 
 const server = http.createServer((request, response) => {
-    const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
+    const url = new URL(request.url, 'http://localhost');
+    const pathname = decodeURIComponent(url.pathname);
+    if (pathname === '/qa/block-app') { blockApp = url.searchParams.get('value') === '1'; response.writeHead(200).end('ok'); return; }
+    if (blockApp && pathname === '/js/app.js') { response.writeHead(503).end('Temporarily unavailable'); return; }
+    if (simulateStaleAssets && !url.searchParams.has('v')) {
+        if (pathname === '/style.css') { response.writeHead(200, { 'Content-Type': 'text/css' }).end('.main-menu { display:grid; grid-template-columns:repeat(3,1fr); }'); return; }
+        if (pathname.startsWith('/js/')) { response.writeHead(200, { 'Content-Type': 'text/javascript' }).end('throw new Error("Stale unversioned module was loaded");'); return; }
+    }
     const file = path.resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
     if (!file.startsWith(root + path.sep)) { response.writeHead(403).end(); return; }
     fs.readFile(file, (error, data) => {
@@ -101,6 +110,7 @@ async function main() {
         fs.writeFileSync(path.join(output, 'campaign-desktop.png'), Buffer.from(shot.data, 'base64'));
         await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
         assert(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), 'Mobile page overflows');
+        assert.equal(await evaluate("getComputedStyle(document.querySelector('.main-menu')).gridTemplateColumns.split(' ').length"), 2);
         const mobile = await send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(output, 'campaign-mobile.png'), Buffer.from(mobile.data, 'base64'));
         console.log('PASS: mobile layout fits 390px; screenshots saved.');
@@ -191,7 +201,7 @@ async function main() {
 
         await visit('scores.html', "document.getElementById('total_points')?.textContent === '0' && document.querySelector('.next-card-button')");
         await evaluate("document.getElementById('forest-task-score').value=30;document.getElementById('forest-tasks-form').requestSubmit()");
-        await evaluate(`(async()=>{const files=await import('/js/campaign-files.js');const rankings=await import('/js/rankings.js');files.startNewCampaign(localStorage,await rankings.loadGameRankings());document.getElementById('save-game').click();})()`);
+        await evaluate(`(async()=>{const version=new URL(document.querySelector('script[src*="bootstrap.js"]').src).search;const files=await import('/js/campaign-files.js'+version);const rankings=await import('/js/rankings.js'+version);files.startNewCampaign(localStorage,await rankings.loadGameRankings());document.getElementById('save-game').click();})()`);
         assert.equal(await evaluate("JSON.parse(localStorage.getItem('dorfExplorerGames')).length"), 0);
         assert.equal(await evaluate("document.getElementById('total_points').textContent"), '30');
         assert((await evaluate("document.getElementById('score-validation-message').textContent")).includes('campaign has changed'));
@@ -233,6 +243,21 @@ async function main() {
         assert.equal(await evaluate("localStorage.getItem('dorfExplorerGames')"), '{broken-json');
         assert((await evaluate("document.getElementById('editing-status').textContent")).includes('kept unchanged'));
         console.log('PASS: damaged saved data is reported and preserved instead of being silently replaced.');
+
+        await evaluate("localStorage.setItem('dorfExplorerGames','[]')");
+        const campaignBeforeLoadFailure = await evaluate("localStorage.getItem('dorfExplorerCampaign')");
+        await send('Network.enable');
+        await send('Network.setCacheDisabled', { cacheDisabled: true });
+        await fetch(base + '/qa/block-app?value=1');
+        await visit('campaign-tracker.html', "document.getElementById('app-load-status')");
+        assert((await evaluate("document.getElementById('campaign-loading').textContent")).includes('could not finish loading'));
+        assert.equal(await evaluate("localStorage.getItem('dorfExplorerCampaign')"), campaignBeforeLoadFailure);
+        await fetch(base + '/qa/block-app?value=0');
+        await evaluate("document.querySelector('#app-load-status button').click()");
+        await wait("document.getElementById('campaign-content')?.hidden === false");
+        assert.equal(await evaluate("localStorage.getItem('dorfExplorerCampaign')"), campaignBeforeLoadFailure);
+        console.log('PASS: failed module loading displays a reload action; retry works without clearing saved data.');
+        if (simulateStaleAssets) console.log('PASS: the app works with deliberately stale unversioned JavaScript and CSS.');
         assert.deepEqual(errors, [], 'Browser JavaScript errors');
         console.log('No browser JavaScript exceptions. Screenshots: ' + output);
         await send('Browser.close').catch(() => {});

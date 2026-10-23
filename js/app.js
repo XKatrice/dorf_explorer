@@ -1,11 +1,11 @@
-import { calculateScore } from "./scoring.js";
-import { saveGame, loadGameForEditing } from "./storage.js";
-import { initialiseCampaign } from "./campaign.js";
-import { initialiseSpecials } from "./specials.js";
-import { initialiseCardNavigation } from "./card-navigation.js";
-import { initialiseFlags } from "./flags.js";
-import { initialiseCampaignTracker, initialiseMovementSummary } from "./campaign-tracker.js";
-import { initialiseScoreValidation } from "./validation.js";
+import { calculateScore } from "./scoring.js?v=0f4147c0c5d0";
+import { saveGame, loadGameForEditing } from "./storage.js?v=0f4147c0c5d0";
+import { initialiseCampaign } from "./campaign.js?v=0f4147c0c5d0";
+import { initialiseSpecials } from "./specials.js?v=0f4147c0c5d0";
+import { initialiseCardNavigation } from "./card-navigation.js?v=0f4147c0c5d0";
+import { initialiseFlags } from "./flags.js?v=0f4147c0c5d0";
+import { initialiseCampaignTracker, initialiseMovementSummary } from "./campaign-tracker.js?v=0f4147c0c5d0";
+import { initialiseScoreValidation } from "./validation.js?v=0f4147c0c5d0";
 initialiseCampaign().catch(error => {
     const history = document.getElementById("saved-games-list");
     if (history) history.textContent = error.message;
@@ -33,7 +33,6 @@ scoreInputs.forEach(function (input) {
     input.addEventListener("input", calculateScore);
 
 
-console.log("score inputs:", scoreInputs);
 
 
 

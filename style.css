@@ -8,6 +8,8 @@
     --border: #D8D1C4;
 }
 
+#app-load-status { padding: 1rem; margin: 1rem; border: 1px solid #9a3f35; border-radius: 8px; background: var(--card); color: #9a3f35; }
+
 
 body {
     background-color:var(--cream);

@@ -26,9 +26,14 @@ Completed campaigns reject score saves, game deletion, player-name changes and m
 
 Validation:
 
+Before committing JavaScript, stylesheet or ranking-table updates, run the asset-version updater. It computes one content-derived release ID and applies it to each page's CSS and loader, every nested module dependency, and the ranking CSV request. This prevents browsers from mixing new HTML with cached files from an older release. The loader reports failed imports with a reload button without clearing saved data.
+
 ```powershell
+& 'C:\Program Files\nodejs\node.exe' scripts/update-asset-version.cjs
+& 'C:\Program Files\nodejs\node.exe' --test tests/asset-version.test.cjs
 & 'C:\Program Files\nodejs\node.exe' --test tests/editing.test.cjs tests/campaign.test.cjs tests/data-store.test.cjs
 & 'C:\Program Files\nodejs\node.exe' tests/browser-smoke.cjs
+& 'C:\Program Files\nodejs\node.exe' tests/browser-smoke.cjs --stale-assets
 ```
 
 The browser check uses a temporary, isolated Microsoft Edge profile and a temporary local server. It does not read or alter the user's browser data. It checks the map and path controls, saving, editing, deleting, balance changes, persistence, and mobile overflow, and writes screenshots to the temporary QA directory printed at completion.
