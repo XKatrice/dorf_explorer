@@ -1,10 +1,10 @@
-import { readGames, readStoredJSON, writeStoredJSON } from "./data-store.js?v=cd8007e0e601";
-import { loadGameRankings } from "./rankings.js?v=cd8007e0e601";
-import { ARCHIVE_KEY, ensureCampaignStarted, assertCampaignAssociation, assertCampaignEditable, buildCampaignFile, startNewCampaign, downloadCampaignFile, parseCampaignFile, importCampaignFile } from "./campaign-files.js?v=cd8007e0e601";
+import { readGames, readStoredJSON, writeStoredJSON } from "./data-store.js?v=4e224e0d154c";
+import { loadGameRankings } from "./rankings.js?v=4e224e0d154c";
+import { ARCHIVE_KEY, ensureCampaignStarted, assertCampaignAssociation, assertCampaignEditable, buildCampaignFile, startNewCampaign, downloadCampaignFile, parseCampaignFile, importCampaignFile } from "./campaign-files.js?v=4e224e0d154c";
 import {
     CAMPAIGN_KEY, CAMPAIGN_NODES, CAMPAIGN_PATHS, readCampaignState,
     movementEarned, campaignProgress, campaignAchievements, spendMovement, pathLength, stepId
-} from "./campaign-model.js?v=cd8007e0e601";
+} from "./campaign-model.js?v=4e224e0d154c";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 const nodeById = new Map(CAMPAIGN_NODES.map(node => [node.id, node]));

@@ -1,7 +1,7 @@
-import { readGames, writeStoredJSON, storageFailure } from "./data-store.js?v=cd8007e0e601";
-import { CAMPAIGN_KEY, readCampaignState, addManualAchievement, updateManualAchievement } from "./campaign-model.js?v=cd8007e0e601";
-import { ensureCampaignStarted, assertCampaignEditable } from "./campaign-files.js?v=cd8007e0e601";
-import { readScoreInput } from "./validation.js?v=cd8007e0e601";
+import { readGames, writeStoredJSON, storageFailure } from "./data-store.js?v=4e224e0d154c";
+import { CAMPAIGN_KEY, readCampaignState, addManualAchievement, updateManualAchievement } from "./campaign-model.js?v=4e224e0d154c";
+import { ensureCampaignStarted, assertCampaignEditable } from "./campaign-files.js?v=4e224e0d154c";
+import { readScoreInput } from "./validation.js?v=4e224e0d154c";
 
 export function initialiseManualAchievements() {
     const root = document.getElementById("manual-achievements");

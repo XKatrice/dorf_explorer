@@ -155,14 +155,15 @@ button:hover {
 
 .construction-landscapes label {
     display: grid;
-    grid-template-columns: 32px 1fr auto auto;
+    grid-template-columns: 32px auto 1fr;
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
 }
 
 .construction-landscapes .mini-icon { width: 32px; }
-.construction-landscapes input[type="checkbox"] {
+.construction-landscapes input[type="checkbox"],
+#circus {
     width: 1.25rem;
     height: 1.25rem;
     accent-color: var(--forest);

@@ -2,7 +2,7 @@ let rankingsPromise;
 
 export function loadGameRankings() {
     if (!rankingsPromise) {
-        rankingsPromise = fetch("game_ranking.csv?v=cd8007e0e601").then(async response => {
+        rankingsPromise = fetch("game_ranking.csv?v=4e224e0d154c").then(async response => {
             if (!response.ok) throw new Error("Could not load game rankings. Please reload to try again.");
             const csv = await response.text();
             return csv.trim().split(/\r?\n/).slice(1).map(row => {
