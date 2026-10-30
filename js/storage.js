@@ -1,7 +1,7 @@
-import { ensureCampaignStarted, assertCampaignAssociation, assertCampaignEditable } from "./campaign-files.js?v=a8d45964ab16";
-import { readGames, writeStoredJSON, storageFailure } from "./data-store.js?v=a8d45964ab16";
-import { calculateScore } from "./scoring.js?v=a8d45964ab16";
-import { readScoreInput, isValidScore, scoreInputMessage, reportScoreError, clearScoreError } from "./validation.js?v=a8d45964ab16";
+import { ensureCampaignStarted, assertCampaignAssociation, assertCampaignEditable } from "./campaign-files.js?v=cd8007e0e601";
+import { readGames, writeStoredJSON, storageFailure } from "./data-store.js?v=cd8007e0e601";
+import { calculateScore } from "./scoring.js?v=cd8007e0e601";
+import { readScoreInput, isValidScore, scoreInputMessage, reportScoreError, clearScoreError } from "./validation.js?v=cd8007e0e601";
 
 let scorecardCampaignId = null;
 let scorecardStorageError = null;

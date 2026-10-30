@@ -200,6 +200,14 @@ async function main() {
         await wait("location.pathname.endsWith('campaign-tracker.html') && document.getElementById('movement-available')?.textContent === '15'");
         await evaluate("document.getElementById('campaign-players').value='Alex and Jo';document.getElementById('campaign-players').dispatchEvent(new Event('change'));document.querySelector('.campaign-choice').click();document.querySelector('.campaign-choice').click()");
         assert.equal(await evaluate("document.querySelectorAll('#campaign-unlocks time').length"), 1);
+        await evaluate(`const manualForm=document.querySelector('.manual-check-form');manualForm.querySelector('input[type="text"]').value='Three matching flags';manualForm.querySelector('textarea').value='All three matching flags must be in the same territory; check the printed score requirement.';manualForm.querySelector('input[type="number"]').value='30';manualForm.requestSubmit();`);
+        assert.equal(await evaluate("document.querySelectorAll('.manual-check-card').length"), 1);
+        await evaluate(`const score=document.querySelector('.manual-check-card input[type="number"]');score.value='36';score.dispatchEvent(new Event('change'));`);
+        assert.equal(await evaluate("document.querySelector('.manual-check-card input[type=\"checkbox\"]').checked"), false);
+        assert.equal(await evaluate("document.getElementById('campaign-total-score').textContent"), '400');
+        await evaluate("document.querySelector('.manual-check-card input[type=\"checkbox\"]').click()");
+        assert(await evaluate("JSON.parse(localStorage.getItem('dorfExplorerCampaign')).manualAchievements[0].completedAt"));
+        assert.equal(await evaluate("document.querySelectorAll('#campaign-unlocks time').length"), 2);
         await evaluate(`HTMLAnchorElement.prototype.click=function(){window.downloadName=this.download;window.downloadFile=fetch(this.href).then(response=>response.json());};document.getElementById('complete-campaign').click();document.getElementById('export-campaign').click()`);
         const exported = await evaluate('window.downloadFile');
         assert.equal(exported.campaign.playerNames, 'Alex and Jo');
@@ -209,11 +217,13 @@ async function main() {
         assert(exported.campaign.startedAt);
         assert(exported.campaign.completedAt);
         assert(exported.campaign.achievements.find(item => item.id === 'box1').unlockedAt);
+        assert(exported.campaign.achievements.find(item => item.name === 'Three matching flags').unlockedAt);
         assert((await evaluate('window.downloadName')).endsWith('.json'));
         await evaluate("window.confirm=()=>true;document.getElementById('new-campaign').click()");
         assert.equal(await evaluate("document.getElementById('campaign-game-count').textContent"), '0');
         assert.equal(await evaluate("document.getElementById('movement-available').textContent"), '0');
         assert.equal(await evaluate("document.getElementById('campaign-players').value"), '');
+        assert.equal(await evaluate("document.querySelectorAll('.manual-check-card').length"), 0);
         assert.equal(await evaluate("JSON.parse(localStorage.getItem('dorfExplorerCampaignArchives')).length"), 1);
         await evaluate("document.querySelector('#campaign-archives button').click()");
         const archived = await evaluate('window.downloadFile');
@@ -260,6 +270,8 @@ async function main() {
         assert.equal(await evaluate("JSON.parse(localStorage.getItem('dorfExplorerCampaign')).completedAt"), exported.campaign.completedAt);
         await visit('scores.html?edit=' + encodeURIComponent(exported.campaign.games[0].id), "document.getElementById('save-game')?.disabled === true && document.querySelector('.next-card-button')");
         assert((await evaluate("document.getElementById('editing-status').textContent")).includes('campaign is complete'));
+        assert.equal(await evaluate("document.querySelector('.manual-check-card input[type=\"checkbox\"]').checked"), true);
+        assert.equal(await evaluate("document.querySelector('.manual-check-card input[type=\"checkbox\"]').disabled"), true);
         await visit('campaign.html', "document.querySelector('.delete-game-button')");
         await evaluate("window.confirm=()=>true;document.querySelector('.delete-game-button').click()");
         assert.equal(await evaluate("JSON.parse(localStorage.getItem('dorfExplorerGames')).length"), 1);

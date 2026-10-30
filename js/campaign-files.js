@@ -1,6 +1,6 @@
-import { CAMPAIGN_KEY, readCampaignState, campaignAchievements, campaignProgress, movementEarned } from "./campaign-model.js?v=a8d45964ab16";
-import { findGameRanking } from "./rankings.js?v=a8d45964ab16";
-import { readGames, readStoredJSON, writeStoredJSON, commitStoredRecords } from "./data-store.js?v=a8d45964ab16";
+import { CAMPAIGN_KEY, readCampaignState, campaignAchievements, campaignProgress, movementEarned } from "./campaign-model.js?v=cd8007e0e601";
+import { findGameRanking } from "./rankings.js?v=cd8007e0e601";
+import { readGames, readStoredJSON, writeStoredJSON, commitStoredRecords } from "./data-store.js?v=cd8007e0e601";
 
 export const ARCHIVE_KEY = "dorfExplorerCampaignArchives";
 
@@ -31,7 +31,10 @@ export function buildCampaignFile(state, games, rankings, exportedAt = new Date(
             totalGames: games.length, totalScore,
             highestScoringGame: highest ? { id: highest.id, savedAt: highest.savedAt, score: Number(highest.total) } : null,
             movement: { earned: progress.earned, spent: progress.spent, balance: progress.balance },
-            achievements: campaignAchievements(state),
+            achievements: [...campaignAchievements(state), ...(state.manualAchievements || []).map(item => ({
+                id: item.id, name: item.name, criteria: item.criteria, target: item.target,
+                recordedScore: item.recordedScore, unlocked: Boolean(item.completedAt), unlockedAt: item.completedAt
+            }))],
             games: games.map(game => ({ ...game, ranking: findGameRanking(Number(game.total), rankings) || null })),
             progress: state
         }

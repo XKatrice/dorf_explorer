@@ -36,6 +36,7 @@ New files are not included by a tracked-files-only commit. Include the following
 - `js/campaign-files.js`, `js/campaign-model.js`, `js/campaign-tracker.js`
 - `js/card-navigation.js`, `js/data-store.js`, `js/flags.js`, `js/rankings.js`, `js/validation.js`
 - `js/bootstrap.js` and `scripts/update-asset-version.cjs` keep released app files consistent across browser caches.
+- `js/manual-achievements.js` provides the shared manual achievement checklist on the Scorecard and Campaign pages.
 - The test files under `tests/` and documentation under `features/`
 
 The two superseded, untracked SVG files do not need to be added. All locally referenced runtime files were checked for existence. This audit does not stage or commit files.

@@ -1,5 +1,5 @@
-import { calculateScore } from "./scoring.js?v=a8d45964ab16";
-import { readScoreInput, isValidScore, scoreInputMessage, reportScoreError, clearScoreError } from "./validation.js?v=a8d45964ab16";
+import { calculateScore } from "./scoring.js?v=cd8007e0e601";
+import { readScoreInput, isValidScore, scoreInputMessage, reportScoreError, clearScoreError } from "./validation.js?v=cd8007e0e601";
 
 
 
@@ -173,6 +173,9 @@ function initialiseHearts() {
 }
 
 export function initialiseSpecials(savedGame = null) {
+    ["forest", "field", "village"].forEach(landscape => {
+        document.getElementById(`construction-site-${landscape}`)?.addEventListener("input", calculateScore);
+    });
     function initialiseTaskEntry(config) {
         initialiseSavedTaskEntry(config, savedGame);
     }

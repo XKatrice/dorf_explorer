@@ -1,5 +1,5 @@
-import { findGameRanking } from "./rankings.js?v=a8d45964ab16";
-import { readStoredJSON } from "./data-store.js?v=a8d45964ab16";
+import { findGameRanking } from "./rankings.js?v=cd8007e0e601";
+import { readStoredJSON } from "./data-store.js?v=cd8007e0e601";
 
 export const CAMPAIGN_KEY = "dorfExplorerCampaign";
 const MAP_REVISION = 2;
@@ -158,7 +158,8 @@ export function readCampaignState(storage) {
     const correctingPaths = saved.mapRevision === undefined;
     let state = {
         version: 1, mapRevision: MAP_REVISION, moves: [], lengths: {}, players: String(saved.players || ""),
-        id: saved.id || null, startedAt: saved.startedAt || null, completedAt: saved.completedAt || null
+        id: saved.id || null, startedAt: saved.startedAt || null, completedAt: saved.completedAt || null,
+        manualAchievements: (saved.manualAchievements || []).map(item => ({ ...item }))
     };
     for (const [id, length] of Object.entries(saved.lengths || {})) {
         // The old settings form saved defaults too; replace those while retaining custom counts.
@@ -187,4 +188,31 @@ export function readCampaignState(storage) {
     });
     if (refunded) state.pathCorrectionRefund = refunded;
     return state;
+}
+
+export function addManualAchievement(state, name, criteria, target = null) {
+    if (state.completedAt) throw new Error("Reopen this campaign before changing achievements.");
+    name = name.trim();
+    criteria = criteria.trim();
+    if (!name || name.length > 80 || !criteria || criteria.length > 1000) {
+        throw new Error("Enter a name (up to 80 characters) and the card's criteria (up to 1,000 characters).");
+    }
+    if (target !== null && (!Number.isSafeInteger(target) || target <= 0)) throw new Error("Enter a positive whole-number target, or leave it blank.");
+    if ((state.manualAchievements || []).length >= 100) throw new Error("This campaign already has 100 manual achievements.");
+    return { ...state, manualAchievements: [...(state.manualAchievements || []), {
+        id: `manual-${crypto.randomUUID()}`, name, criteria, target, recordedScore: 0, completedAt: null
+    }] };
+}
+
+export function updateManualAchievement(state, id, changes, now = new Date().toISOString()) {
+    if (state.completedAt) throw new Error("Reopen this campaign before changing achievements.");
+    if (!(state.manualAchievements || []).some(item => item.id === id)) throw new Error("This achievement no longer exists. Reload the page.");
+    if (changes.recordedScore !== undefined && (!Number.isSafeInteger(changes.recordedScore) || changes.recordedScore < 0)) {
+        throw new Error("Enter a whole-number score of 0 or more.");
+    }
+    return { ...state, manualAchievements: state.manualAchievements.map(item => item.id !== id ? item : {
+        ...item,
+        recordedScore: changes.recordedScore ?? item.recordedScore,
+        completedAt: changes.completed === undefined ? item.completedAt : changes.completed ? item.completedAt || now : null
+    }) };
 }

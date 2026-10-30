@@ -146,6 +146,27 @@ button:hover {
     justify-self: center;
 
 }
+
+.construction-landscapes {
+    display: grid;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.construction-landscapes label {
+    display: grid;
+    grid-template-columns: 32px 1fr auto auto;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.construction-landscapes .mini-icon { width: 32px; }
+.construction-landscapes input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    accent-color: var(--forest);
+}
 .score-item {
     padding: 1rem;
     border: 1px solid var(--border);
@@ -710,6 +731,20 @@ a.delete-game-button:focus-visible {
     margin: 0 auto 4rem;
     padding: 0 1rem;
 }
+
+.manual-achievements { max-width: 1100px; margin: 2rem auto; padding: 1.25rem; border: 1px solid var(--border); border-radius: 12px; background: var(--card); }
+.manual-achievements p { line-height: 1.6; }
+.manual-check-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1rem; }
+.manual-check-card { padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--cream); overflow-wrap: anywhere; }
+.manual-check-card h3 { margin: 0 0 0.75rem; }
+.manual-check-card label, .manual-check-form label { display: grid; gap: 0.4rem; }
+.manual-check-card .manual-check-confirmation { display: flex; align-items: flex-start; gap: 0.5rem; margin-top: 1rem; line-height: 1.5; }
+.manual-check-confirmation input { flex-shrink: 0; width: 1.1rem; height: 1.1rem; }
+.manual-check-form { display: grid; gap: 0.75rem; margin-top: 1.5rem; }
+.manual-achievements input:not([type="checkbox"]), .manual-achievements textarea { box-sizing: border-box; padding: 0.6rem; border: 1px solid var(--border); border-radius: 6px; font: inherit; max-width: 100%; }
+.manual-achievements input[type="number"] { width: 8rem; }
+.manual-achievements :is(button,input,textarea):disabled { opacity: 0.5; }
+.manual-achievements :is(button,input,textarea):focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
 
 .campaign-management { margin-bottom: 1.5rem; padding: 1.25rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
 .campaign-statistics { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin: 0 0 1rem; }

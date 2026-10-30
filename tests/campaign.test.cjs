@@ -10,7 +10,7 @@ for (const file of ['data-store', 'rankings', 'campaign-model', 'campaign-files'
     vm.runInContext(fs.readFileSync(path.join(root, `js/${file}.js`), 'utf8')
         .replace(/^import .*;\r?\n/gm, '').replace(/export /g, ''), context);
 }
-const api = vm.runInContext('({ CAMPAIGN_KEY, CAMPAIGN_NODES, CAMPAIGN_PATHS, pathLength, stepId, movementEarned, campaignProgress, campaignAchievements, spendMovement, changePathLength, readCampaignState, ARCHIVE_KEY, ensureCampaignStarted, buildCampaignFile, startNewCampaign, parseCampaignFile, importCampaignFile, assertCampaignEditable })', context);
+const api = vm.runInContext('({ CAMPAIGN_KEY, CAMPAIGN_NODES, CAMPAIGN_PATHS, pathLength, stepId, movementEarned, campaignProgress, campaignAchievements, spendMovement, changePathLength, readCampaignState, ARCHIVE_KEY, ensureCampaignStarted, buildCampaignFile, startNewCampaign, parseCampaignFile, importCampaignFile, assertCampaignEditable, addManualAchievement, updateManualAchievement })', context);
 const rankings = fs.readFileSync(path.join(root, 'game_ranking.csv'), 'utf8').trim().split('\n').slice(1).map(row => {
     const [score, title, points] = row.split(',');
     return { minimumScore: Number(score), title, movementPoints: Number(points) };
@@ -327,4 +327,39 @@ test('failed imports roll back writes and retain the existing campaign', () => {
     assert.equal(storage.getItem(api.CAMPAIGN_KEY), JSON.stringify(current));
     assert.equal(storage.getItem('dorfExplorerGames'), JSON.stringify(games));
     assert.equal(storage.getItem(api.ARCHIVE_KEY), null);
+});
+
+test('manual achievements require player confirmation even after their reference score reaches the target', () => {
+    let state = api.addManualAchievement(empty(), 'Three matching flags', 'All three flags must share one territory.', 30);
+    const id = state.manualAchievements[0].id;
+    state = api.updateManualAchievement(state, id, { recordedScore: 36 });
+    assert.equal(state.manualAchievements[0].completedAt, null);
+    assert.equal(api.campaignProgress(state, 10).spent, 0);
+    state = api.updateManualAchievement(state, id, { completed: true }, '2026-10-23T12:00:00Z');
+    assert.equal(state.manualAchievements[0].completedAt, '2026-10-23T12:00:00Z');
+    state = api.updateManualAchievement(state, id, { completed: true }, '2026-10-24T12:00:00Z');
+    assert.equal(state.manualAchievements[0].completedAt, '2026-10-23T12:00:00Z');
+    state = api.updateManualAchievement(state, id, { completed: false });
+    assert.equal(state.manualAchievements[0].completedAt, null);
+    assert.throws(() => api.updateManualAchievement(state, id, { recordedScore: -1 }), /whole-number/);
+    assert.throws(() => api.addManualAchievement(state, '', 'Condition'), /Enter a name/);
+    assert.throws(() => api.addManualAchievement(state, 'Name', 'Condition', 1.5), /whole-number/);
+    assert.throws(() => api.updateManualAchievement({ ...state, completedAt: '2026-10-23T12:00:00Z' }, id, { completed: true }), /Reopen/);
+});
+
+test('manual checks and completion dates survive storage, export and import without affecting score totals', () => {
+    let state = { ...api.addManualAchievement(empty(), 'Territory condition', 'Check the board.', 30), id: 'source', players: 'Jo' };
+    const id = state.manualAchievements[0].id;
+    state = api.updateManualAchievement(state, id, { recordedScore: 36, completed: true }, '2026-10-23T12:00:00Z');
+    const games = [{ id: 'game', total: 100, scores: { forest_tasks: 100 } }];
+    const stored = campaignStorage(state, games);
+    state = api.readCampaignState(stored);
+    assert.equal(state.manualAchievements[0].recordedScore, 36);
+    const file = api.buildCampaignFile(state, games, rankings);
+    assert.equal(file.campaign.totalScore, 100);
+    assert.equal(file.campaign.achievements.find(item => item.id === id).unlockedAt, '2026-10-23T12:00:00Z');
+    const destination = campaignStorage({ ...empty(), id: 'other', startedAt: '2026-10-23T12:00:00Z' }, []);
+    const restored = api.importCampaignFile(destination, JSON.stringify(file), rankings);
+    assert.equal(restored.manualAchievements[0].completedAt, '2026-10-23T12:00:00Z');
+    assert.equal(restored.manualAchievements[0].target, 30);
 });

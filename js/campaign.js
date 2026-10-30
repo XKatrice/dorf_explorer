@@ -1,7 +1,7 @@
-import { readGames, writeStoredJSON, storageFailure } from "./data-store.js?v=a8d45964ab16";
-import { ensureCampaignStarted, assertCampaignEditable } from "./campaign-files.js?v=a8d45964ab16";
-import { loadGameRankings, findGameRanking } from "./rankings.js?v=a8d45964ab16";
-import { initialiseMovementSummary } from "./campaign-tracker.js?v=a8d45964ab16";
+import { readGames, writeStoredJSON, storageFailure } from "./data-store.js?v=cd8007e0e601";
+import { ensureCampaignStarted, assertCampaignEditable } from "./campaign-files.js?v=cd8007e0e601";
+import { loadGameRankings, findGameRanking } from "./rankings.js?v=cd8007e0e601";
+import { initialiseMovementSummary } from "./campaign-tracker.js?v=cd8007e0e601";
 
 const scoreLabels = {
     forest_tasks: "Forest tasks",
@@ -26,6 +26,7 @@ const scoreLabels = {
     shepherdess_points: "Shepherdess",
     hill_points: "Hill",
     balloon_points: "Balloon Launch Site",
+    construction_site_points: "Construction Site",
     circus: "Circus"
 };
 

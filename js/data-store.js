@@ -35,6 +35,14 @@ function validCampaign(value) {
         && (value.id === undefined || value.id === null || (typeof value.id === "string" && value.id.length > 0))
         && (value.players === undefined || typeof value.players === "string")
         && optionalDate(value.startedAt) && optionalDate(value.completedAt)
+        && (value.manualAchievements === undefined || (Array.isArray(value.manualAchievements)
+            && value.manualAchievements.length <= 100
+            && new Set(value.manualAchievements.map(item => item?.id)).size === value.manualAchievements.length
+            && value.manualAchievements.every(item => record(item) && typeof item.id === "string" && item.id.length > 0
+                && typeof item.name === "string" && item.name.trim().length > 0 && item.name.length <= 80
+                && typeof item.criteria === "string" && item.criteria.trim().length > 0 && item.criteria.length <= 1000
+                && (item.target === null || (validNumber(item.target) && item.target > 0))
+                && validNumber(item.recordedScore) && optionalDate(item.completedAt))))
         && (value.unlockDates === undefined || (record(value.unlockDates) && Object.values(value.unlockDates).every(validDate))));
 }
 

@@ -85,6 +85,34 @@ function setup(games = [], edit = '') {
     return { nodes, state, run, input, add, saveLabel, otherRecords, storage: context.localStorage };
 }
 
+test('Construction Site scores each landscape and restores checkbox states when editing', () => {
+    for (let mask = 0; mask < 8; mask++) {
+        const game = setup();
+        const landscapes = ['forest', 'field', 'village'];
+        landscapes.forEach((landscape, index) => {
+            game.nodes.get(`construction-site-${landscape}`).checked = Boolean(mask & (1 << index));
+            game.nodes.get(`construction-site-${landscape}`).listeners.input();
+        });
+        const expected = landscapes.reduce((sum, _, index) => sum + (mask & (1 << index) ? 7 : 0), 0);
+        for (const id of ['construction-site-total', 'summary_construction_site', 'special_points', 'total_points']) {
+            assert.equal(Number(game.nodes.get(id).textContent), expected);
+        }
+        game.input('flag-forest-1', 1);
+        game.run('saveGame()');
+        const saved = JSON.parse(game.state.data);
+        assert.equal(saved[0].scores.construction_site_points, expected);
+        const edit = setup(saved, saved[0].id);
+        landscapes.forEach((landscape, index) => {
+            assert.equal(edit.nodes.get(`construction-site-${landscape}`).checked, Boolean(mask & (1 << index)));
+        });
+        assert.equal(Number(edit.nodes.get('total_points').textContent), expected + 1);
+        edit.nodes.get('construction-site-forest').checked = !(mask & 1);
+        edit.nodes.get('construction-site-forest').listeners.input();
+        edit.run('saveGame()');
+        assert.equal(JSON.parse(edit.state.data)[0].total, expected + 1 + (mask & 1 ? -7 : 7));
+    }
+});
+
 test('new save and edit restore individual entries and update the same record', () => {
     const first = setup();
     first.add('forest-tasks-form', 'forest-task-score', 5);

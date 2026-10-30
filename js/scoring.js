@@ -1,4 +1,4 @@
-import { readScoreInput, isValidScore } from "./validation.js?v=a8d45964ab16";
+import { readScoreInput, isValidScore } from "./validation.js?v=cd8007e0e601";
 
 export function calculateScore() {
 
@@ -76,6 +76,12 @@ export function calculateScore() {
 
     const circusInput = document.getElementById("circus");
 
+    const constructionSitePoints = ["forest", "field", "village"].reduce((total, landscape) =>
+        total + (document.getElementById(`construction-site-${landscape}`).checked ? 7 : 0), 0);
+    document.getElementById("construction_site_points").value = constructionSitePoints;
+    document.getElementById("construction-site-total").textContent = constructionSitePoints;
+    document.getElementById("summary_construction_site").textContent = constructionSitePoints;
+
     let circusPoints = 0;
 
     if (circusInput.checked) {
@@ -94,7 +100,7 @@ export function calculateScore() {
 
     const longTotal = longRailPoints + longRiverPoints
 
-    const specialPoints = heartsPoints + harvestPoints + circusPoints + watchtowerPoints + forestCabinPoints + shipPoints + locomotivePoints + signalmanPoints + shepherdessPoints + hillPoints + balloonPoints
+    const specialPoints = heartsPoints + harvestPoints + circusPoints + watchtowerPoints + forestCabinPoints + shipPoints + locomotivePoints + signalmanPoints + shepherdessPoints + hillPoints + balloonPoints + constructionSitePoints
 
     const totalPoints = taskTotal + longTotal + flagTotal + specialPoints;
 

@@ -1,10 +1,10 @@
-import { readGames, readStoredJSON, writeStoredJSON } from "./data-store.js?v=a8d45964ab16";
-import { loadGameRankings } from "./rankings.js?v=a8d45964ab16";
-import { ARCHIVE_KEY, ensureCampaignStarted, assertCampaignAssociation, assertCampaignEditable, buildCampaignFile, startNewCampaign, downloadCampaignFile, parseCampaignFile, importCampaignFile } from "./campaign-files.js?v=a8d45964ab16";
+import { readGames, readStoredJSON, writeStoredJSON } from "./data-store.js?v=cd8007e0e601";
+import { loadGameRankings } from "./rankings.js?v=cd8007e0e601";
+import { ARCHIVE_KEY, ensureCampaignStarted, assertCampaignAssociation, assertCampaignEditable, buildCampaignFile, startNewCampaign, downloadCampaignFile, parseCampaignFile, importCampaignFile } from "./campaign-files.js?v=cd8007e0e601";
 import {
     CAMPAIGN_KEY, CAMPAIGN_NODES, CAMPAIGN_PATHS, readCampaignState,
     movementEarned, campaignProgress, campaignAchievements, spendMovement, pathLength, stepId
-} from "./campaign-model.js?v=a8d45964ab16";
+} from "./campaign-model.js?v=cd8007e0e601";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 const nodeById = new Map(CAMPAIGN_NODES.map(node => [node.id, node]));
@@ -62,6 +62,7 @@ export async function initialiseCampaignTracker() {
             assertCampaignAssociation(localStorage, nextState.id);
             writeStoredJSON(localStorage, CAMPAIGN_KEY, nextState);
             state = nextState;
+            window.dispatchEvent(new CustomEvent("campaign-updated", { detail: { source: "tracker" } }));
         }
 
         function error(message) {
@@ -263,7 +264,10 @@ export async function initialiseCampaignTracker() {
             notice.hidden = !notice.textContent;
             const unlocked = document.getElementById("campaign-unlocks");
             unlocked.replaceChildren();
-            campaignAchievements(state).forEach(achievement => {
+            const achievements = [...campaignAchievements(state), ...(state.manualAchievements || []).map(item => ({
+                id: item.id, name: item.name, unlocked: Boolean(item.completedAt), unlockedAt: item.completedAt
+            }))];
+            achievements.forEach(achievement => {
                 const item = document.createElement("li");
                 item.className = `campaign-achievement${achievement.unlocked ? " is-unlocked" : ""}`;
                 const name = document.createElement("span");
@@ -321,6 +325,7 @@ export async function initialiseCampaignTracker() {
             try {
                 state = startNewCampaign(localStorage, rankings);
                 players.value = "";
+                window.dispatchEvent(new CustomEvent("campaign-updated", { detail: { source: "tracker" } }));
                 render();
                 status.textContent = "New campaign started. Your previous campaign is saved under Archived campaigns.";
             } catch (problem) { error(problem.message); }
@@ -344,6 +349,7 @@ export async function initialiseCampaignTracker() {
                 assertCampaignAssociation(localStorage, campaignBeforeReading);
                 state = importCampaignFile(localStorage, text, rankings);
                 players.value = state.players;
+                window.dispatchEvent(new CustomEvent("campaign-updated", { detail: { source: "tracker" } }));
                 render();
                 status.textContent = "Campaign restored. Your previous campaign is available under Archived campaigns.";
             } catch (problem) { error(problem.message); }
@@ -357,6 +363,13 @@ export async function initialiseCampaignTracker() {
                     render();
                 } catch (problem) { error(problem.message); }
             }
+        });
+        window.addEventListener("campaign-updated", event => {
+            if (event.detail?.source === "tracker") return;
+            try {
+                state = readCampaignState(localStorage);
+                render();
+            } catch (problem) { error(problem.message); }
         });
         render();
         if (state.pathCorrectionRefund) {

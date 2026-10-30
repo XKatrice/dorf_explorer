@@ -1,11 +1,12 @@
-import { calculateScore } from "./scoring.js?v=a8d45964ab16";
-import { saveGame, loadGameForEditing } from "./storage.js?v=a8d45964ab16";
-import { initialiseCampaign } from "./campaign.js?v=a8d45964ab16";
-import { initialiseSpecials } from "./specials.js?v=a8d45964ab16";
-import { initialiseCardNavigation } from "./card-navigation.js?v=a8d45964ab16";
-import { initialiseFlags } from "./flags.js?v=a8d45964ab16";
-import { initialiseCampaignTracker, initialiseMovementSummary } from "./campaign-tracker.js?v=a8d45964ab16";
-import { initialiseScoreValidation } from "./validation.js?v=a8d45964ab16";
+import { calculateScore } from "./scoring.js?v=cd8007e0e601";
+import { saveGame, loadGameForEditing } from "./storage.js?v=cd8007e0e601";
+import { initialiseCampaign } from "./campaign.js?v=cd8007e0e601";
+import { initialiseSpecials } from "./specials.js?v=cd8007e0e601";
+import { initialiseCardNavigation } from "./card-navigation.js?v=cd8007e0e601";
+import { initialiseFlags } from "./flags.js?v=cd8007e0e601";
+import { initialiseCampaignTracker, initialiseMovementSummary } from "./campaign-tracker.js?v=cd8007e0e601";
+import { initialiseScoreValidation } from "./validation.js?v=cd8007e0e601";
+import { initialiseManualAchievements } from "./manual-achievements.js?v=cd8007e0e601";
 initialiseCampaign().catch(error => {
     const history = document.getElementById("saved-games-list");
     if (history) history.textContent = error.message;
@@ -18,6 +19,7 @@ initialiseSpecials(editingGame);
 initialiseFlags();
 initialiseScoreValidation();
 initialiseCardNavigation();
+initialiseManualAchievements();
 
 
 

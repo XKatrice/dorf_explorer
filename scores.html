@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css?v=a8d45964ab16">
+    <link rel="stylesheet" href="style.css?v=cd8007e0e601">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -877,6 +877,34 @@
         <input type="hidden" id="balloon_points" class="score-input" value="0">
     </div>
 
+    <div class="score-item special-tile">
+        <h3>Construction Site</h3>
+        <p>At the end of the game, score 7 points for each of the Construction Site's landscapes whose territory contains 7 or more tiles. Check each qualifying landscape (up to 21 points).</p>
+        <div class="construction-landscapes">
+            <label for="construction-site-forest">
+                <img class="mini-icon" src="assets/forest-tasks.png" alt="">
+                <span>Forest</span>
+                <input type="checkbox" id="construction-site-forest">
+                <span>7 points</span>
+            </label>
+            <label for="construction-site-field">
+                <img class="mini-icon" src="assets/field-tasks.png" alt="">
+                <span>Field</span>
+                <input type="checkbox" id="construction-site-field">
+                <span>7 points</span>
+            </label>
+            <label for="construction-site-village">
+                <img class="mini-icon" src="assets/village-tasks.png" alt="">
+                <span>Village</span>
+                <input type="checkbox" id="construction-site-village">
+                <span>7 points</span>
+            </label>
+        </div>
+        <div class="special-calculation">
+            <p>Total: <output id="construction-site-total" aria-live="polite">0</output></p>
+        </div>
+        <input type="hidden" id="construction_site_points" class="score-input" value="0">
+    </div>
     <p class="total">Score from Specials: <span id="special_points">0</span></p>
 </div>
 
@@ -885,17 +913,22 @@
 <div>
     <h2 id="scoreboard-heading" tabindex="-1">Scoreboard</h2>
 
-    <div class="score-summary">
+    <!-- Retained for future placement; scoring.js still updates these counters. -->
+    <div class="score-summary" hidden>
         <h3>Achievement: Construction Site</h3>
         <p>Total points from tasks: <output id="achievement-task-total" aria-live="polite">0</output> / 157</p>
         <p>Includes regular tasks and tasks from Harvest Festival, Watchtower, Forest Cabin, Ship and Locomotive at x1. This tracks achievement progress and adds no extra points to your game score.</p>
     </div>
-    <div class="score-summary">
+    <div class="score-summary" hidden>
         <h3>Achievement: Balloon Launch Site</h3>
         <p>Score 300 points or more in a single game.</p>
         <p>Total game score: <output id="achievement-balloon-total" aria-live="polite">0</output> / 300</p>
         <p><output id="achievement-balloon-status" aria-live="polite">300 points to go</output></p>
     </div>
+    <section id="manual-achievements" class="manual-achievements" hidden>
+        <h2>Manual achievement checks</h2>
+        <p>Check territory and layout conditions on your board, then confirm the achievement here. Recorded scores are for reference and do not add to your game score. Changes save to this campaign immediately.</p>
+    </section>
     <div class="score-summary">
         <div class="summary-header-row">
             Tasks:<span id="summary_task_points">0</span>
@@ -973,6 +1006,9 @@
             Circus: <span id="summary_circus">0</span>
         </div>
         <div class="summary-expand-row">
+            Construction Site: <span id="summary_construction_site">0</span>
+        </div>
+        <div class="summary-expand-row">
             Signalman: <span id="summary_signalman">0</span>
         </div>
         <div class="summary-expand-row">
@@ -1008,6 +1044,6 @@
     <a id="cancel-edit" class="delete-game-button" href="campaign.html" hidden>Cancel Editing</a>
 </div>
 </div>
-<script type="module" src="js/bootstrap.js?v=a8d45964ab16" ></script>
+<script type="module" src="js/bootstrap.js?v=cd8007e0e601" ></script>
 </body>
 </html>

@@ -26,6 +26,10 @@ Completed campaigns reject score saves, game deletion, player-name changes and m
 
 **Import campaign file** accepts a downloaded JSON file, validates its records and replays its progress before changing anything, and asks for confirmation with the players and game count. The current campaign is archived before replacement. Games, players, start/completion dates, unlock dates and movement progress are restored; derived totals are recalculated from the restored games. A fresh active campaign ID prevents already-open scorecards from writing into the restored campaign. Invalid files and failed storage writes leave the previous active campaign intact. Imports are limited to 10 MB.
 
+Manual achievement checks are available on the Scorecard and Campaign pages. Players enter the card name, its printed conditions and an optional score target. A recorded score is a reference only: it never adds to game totals or movement earnings. Even when the target is reached, players must explicitly confirm that all board conditions have been met, such as three matching flags belonging to the same territory. Confirmation records a completion date in the Campaign Achievements list; clearing the checkbox removes that date.
+
+Manual entries save immediately to the active campaign, independently of saving a game. They can be removed and are included in campaign files and archives, restored by import, and cleared when starting a new campaign. Completed campaigns lock these controls until reopened. Exact card criteria are entered by the player rather than inferred from individual flag scores.
+
 Validation:
 
 Before committing JavaScript, stylesheet or ranking-table updates, run the asset-version updater. It computes one content-derived release ID and applies it to each page's CSS and loader, every nested module dependency, and the ranking CSV request. This prevents browsers from mixing new HTML with cached files from an older release. The loader reports failed imports with a reload button without clearing saved data.
