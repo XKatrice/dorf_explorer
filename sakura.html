@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dorf Explorer · Sakura Edition</title>
+    <link rel="stylesheet" href="style.css?v=fdb65b1ae0a8">
+</head>
+<body class="sakura-edition">
+    <main class="sakura-main">
+        <h1><img class="sakura-banner" src="assets/sakura_title_banner.png" alt="Dorf Explorer · Sakura Edition"></h1>
+        <nav class="sakura-navigation" aria-label="Sakura navigation">
+            <a href="index.html">Choose an edition</a>
+            <a href="#scorecard">Scorecard</a>
+            <a href="#history">Game History</a>
+            <a href="#campaign">Campaign</a>
+        </nav>
+        <p id="sakura-status" role="status" hidden></p>
+        <section id="scorecard" class="sakura-panel">
+            <h2>Scorecard</h2>
+            <form id="sakura-score-form" novalidate>
+                <div id="sakura-score-fields"></div>
+                <h3 id="sakura-scoreboard" tabindex="-1">Scoreboard</h3>
+                <p><strong>Total <output id="sakura-total" aria-live="polite">0</output> points</strong></p>
+                <button class="primary-button sakura-button" id="sakura-save" type="submit" disabled>Save game</button>
+                <button type="button" id="sakura-cancel" hidden>Cancel edit</button>
+            </form>
+        </section>
+        <section id="history" class="sakura-panel" hidden>
+            <h2>Game History</h2>
+            <ol id="sakura-history"></ol>
+        </section>
+        <section id="campaign" class="sakura-panel" hidden>
+            <h2>Campaign</h2>
+            <p id="sakura-balances" aria-live="polite"></p>
+            <p id="sakura-map-guide">Start at the bottom. Select a highlighted circle to spend a movement point or a highlighted flower to spend cherry blossoms.</p>
+            <button type="button" id="sakura-undo">Undo last move</button>
+            <div id="sakura-map" class="campaign-map sakura-map" role="region" aria-label="Sakura campaign map" aria-describedby="sakura-map-guide" tabindex="0"></div>
+            <h3>Achievements</h3>
+            <p>Mark achievements earned from cards as you complete them.</p>
+            <div id="sakura-achievements"></div>
+        </section>
+        <noscript><p>Enable JavaScript to score games and track your campaign.</p></noscript>
+    </main>
+    <script type="module" src="js/bootstrap.js?v=fdb65b1ae0a8"></script>
+</body>
+</html>

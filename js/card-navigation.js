@@ -1,7 +1,8 @@
-export function initialiseCardNavigation() {
-    const cards = Array.from(document.querySelectorAll(".score-grid .score-item"));
+export function initialiseCardNavigation(root = document, scoreboard = document.getElementById("scoreboard-heading")) {
+    const allCards = Array.from(root.querySelectorAll(".score-grid .score-item"));
+    allCards.forEach(card => card.querySelector(".next-card-button")?.remove());
+    const cards = allCards.filter(card => !card.hidden);
     const inputSelector = 'input:not([type="hidden"]):not(:disabled)';
-    const scoreboard = document.getElementById("scoreboard-heading");
 
     cards.forEach(function (card, index) {
         const nextCard = cards[index + 1];

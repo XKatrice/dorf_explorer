@@ -302,6 +302,70 @@ async function main() {
         await wait("document.getElementById('campaign-content')?.hidden === false");
         assert.equal(await evaluate("localStorage.getItem('dorfExplorerCampaign')"), campaignBeforeLoadFailure);
         console.log('PASS: failed module loading displays a reload action; retry works without clearing saved data.');
+        await visit('index.html', "document.querySelector('.edition-picker a[href=\"sakura.html\"]')");
+        await evaluate("document.querySelector('.edition-picker a[href=\"sakura.html\"]').click()");
+        await wait("document.getElementById('sakura-save')?.disabled === false");
+        assert.equal(await evaluate("document.querySelector('#sakura-wraparound').closest('.score-item').hidden"), true);
+        assert.equal(await evaluate("document.querySelector('#sakura-temples').closest('.score-item').hidden"), true);
+        await evaluate(`{
+            const task = document.getElementById('sakura-cherry');
+            task.value = 150;
+            task.closest('.special-entry-controls').querySelector('button').click();
+            task.value = 6;
+            task.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', cancelable: true}));
+        }`);
+        assert.equal(await evaluate("document.querySelectorAll('.score-chip--sakura-cherry').length"), 2);
+        assert.equal(await evaluate("document.getElementById('sakura-total').textContent"), '156');
+        await evaluate("document.getElementById('sakura-score-form').requestSubmit()");
+        await wait("!document.getElementById('campaign')?.hidden && document.querySelector('#sakura-map .is-available')");
+        assert((await evaluate("document.getElementById('sakura-balances').textContent")).startsWith('4 movement points'));
+        assert(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), 'Sakura map fits the mobile page');
+        await evaluate(`window.sakuraSvg = document.querySelector('#sakura-map svg');
+            document.querySelector('#sakura-map .is-available').dispatchEvent(new MouseEvent('click', {bubbles: true}))`);
+        assert((await evaluate("document.getElementById('sakura-balances').textContent")).startsWith('3 movement points'));
+        assert.equal(await evaluate("document.querySelector('#sakura-map [data-space=route-0-0]').classList.contains('is-filled')"), true);
+        assert.equal(await evaluate("window.sakuraSvg === document.querySelector('#sakura-map svg')"), true);
+        await evaluate(`document.querySelector('#sakura-map .is-available').dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}));
+            location.hash='scorecard'`);
+        await wait("!document.querySelector('#sakura-wraparound').closest('.score-item').hidden");
+        await evaluate("location.hash='history'");
+        await wait("document.querySelector('#sakura-history button')");
+        assert((await evaluate("document.getElementById('sakura-history').textContent")).includes('156 points'));
+        await evaluate("document.querySelector('#sakura-history button').click()");
+        await wait("!document.getElementById('scorecard').hidden");
+        assert.equal(await evaluate("document.querySelector('#sakura-wraparound').closest('.score-item').hidden"), true);
+        await evaluate("document.querySelector('.score-chip--sakura-cherry:last-child').click()");
+        assert.equal(await evaluate("document.getElementById('sakura-total').textContent"), '150');
+        assert.equal(await evaluate("localStorage.getItem('dorfExplorerCampaign')"), campaignBeforeLoadFailure);
+        assert.equal(await evaluate("localStorage.getItem('dorfExplorerGames')"), '[]');
+        console.log('PASS: the edition picker opens Sakura, saves a score, and tracks movement separately from Classic.');
+
+        await evaluate(`(async () => {
+            const version = new URL(document.querySelector('script[src*="bootstrap.js"]').src).search;
+            const { routes, campaignProgress, nextRouteMoves } = await import('/js/sakura-rules.js' + version);
+            const campaign = JSON.parse(localStorage.getItem('dorfExplorerSakura'));
+            const [game] = campaign.games;
+            game.total = 500;
+            game.entries.blossoms = 3;
+            for (const index of [1, 2, 4]) {
+                const route = routes[index];
+                for (let step = 0; step < route.length; step++) {
+                    const [space] = nextRouteMoves(route, campaignProgress(campaign.games, campaign.moves));
+                    campaign.moves.push({ space, currency: 'movement', cost: 1, gameId: game.id });
+                }
+            }
+            localStorage.setItem('dorfExplorerSakura', JSON.stringify(campaign));
+            location.hash = 'campaign';
+        })()`);
+        await wait("document.querySelector('#sakura-map .sakura-map-flower.is-available')");
+        await evaluate(`window.sakuraFlower = document.querySelector('#sakura-map .sakura-map-flower.is-available');
+            window.sakuraFlower.querySelector('ellipse').dispatchEvent(new MouseEvent('click', {bubbles: true}))`);
+        assert.equal(await evaluate("window.sakuraFlower.classList.contains('is-filled')"), true);
+        assert((await evaluate("document.getElementById('sakura-balances').textContent")).includes('2 cherry blossoms'));
+        await evaluate("document.getElementById('sakura-undo').click()");
+        assert.equal(await evaluate("window.sakuraFlower.classList.contains('is-available')"), true);
+        assert((await evaluate("document.getElementById('sakura-balances').textContent")).includes('3 cherry blossoms'));
+        console.log('PASS: Sakura map circles and blossoms advance with their own currency, and undo restores a blossom.');
         if (simulateStaleAssets) console.log('PASS: the app works with deliberately stale unversioned JavaScript and CSS.');
         assert.deepEqual(errors, [], 'Browser JavaScript errors');
         console.log('No browser JavaScript exceptions. Screenshots: ' + output);

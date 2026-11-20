@@ -29,4 +29,7 @@ function showAppLoadError(error) {
     }
 }
 
-import("./app.js?v=4e224e0d154c").catch(showAppLoadError);
+const app = document.body.classList.contains("sakura-edition")
+    ? import("./sakura.js?v=fdb65b1ae0a8")
+    : import("./app.js?v=fdb65b1ae0a8");
+app.catch(showAppLoadError);

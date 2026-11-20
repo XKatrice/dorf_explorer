@@ -93,6 +93,74 @@ button:hover {
     object-fit: contain;
 }
 
+.edition-picker {
+    text-align: center;
+    margin: 1rem auto 2rem;
+}
+
+.edition-picker a {
+    display: inline-block;
+    margin: .25rem;
+    padding: .65rem 1rem;
+    border-radius: .5rem;
+    background: var(--forest);
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.edition-picker .sakura-button,
+.sakura-edition .sakura-button {
+    background: #8a3453;
+    color: white;
+}
+
+.edition-picker a:hover { text-decoration: underline; }
+
+.sakura-edition {
+    --cream: #fcf0f3;
+    --card: #fffafb;
+    --forest: #6a2941;
+    --sage: #8a3453;
+    --deep-sage: #6a2941;
+    --border: #dfbdc8;
+}
+
+.sakura-main { max-width: 68rem; margin: 1.5rem auto; padding: 0 .75rem; }
+.sakura-banner { display: block; width: min(100%, 44rem); height: auto; margin-inline: auto; }
+.sakura-navigation { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem 1.25rem; }
+.sakura-navigation a { color: var(--forest); }
+.sakura-navigation a[aria-current="page"] { font-weight: bold; }
+.sakura-panel { margin-block: 1.5rem; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: .75rem; }
+.sakura-panel h2, .sakura-panel h3 { justify-self: start; }
+#sakura-achievements { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: .75rem; }
+#sakura-score-fields .score-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); padding: 1rem; gap: 1rem; }
+#sakura-score-fields .sakura-score-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "icon" "title" "entry" "scores" "calculation" "navigation";
+    grid-template-rows: auto auto auto 1fr auto auto;
+    align-content: start;
+    overflow-wrap: anywhere;
+}
+#sakura-score-fields .sakura-score-card[hidden] { display: none; }
+#sakura-score-fields .sakura-score-card > h3 { justify-self: center; }
+#sakura-score-fields .special-entry, .sakura-number-entry { grid-area: entry; justify-self: center; }
+.sakura-number-entry { display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: .5rem; }
+.sakura-number-entry + .sakura-number-entry { grid-area: scores; }
+#sakura-score-fields .special-calculation { text-align: center; }
+#sakura-score-fields input[type="number"] { box-sizing: border-box; width: 5rem; flex-shrink: 0; font: inherit; padding: .25rem; }
+.score-chip--sakura-cherry { --chip-colour: #b64f77; }
+.score-chip--sakura-rice { --chip-colour: #5c823f; }
+.score-chip--sakura-village { --chip-colour: #b34e3a; }
+.score-chip--sakura-road { --chip-colour: #805a46; }
+.score-chip--sakura-river { --chip-colour: #367e97; }
+.score-chip--sakura-wraparound { --chip-colour: #6f6480; }
+.score-chip--sakura-double { --chip-colour: #8a6225; }
+.sakura-panel li { margin-block: .45rem; }
+.sakura-panel li button { margin-inline-start: .5rem; padding: .3rem .6rem; }
+.sakura-panel button:disabled { opacity: .6; cursor: default; }
+#sakura-status { color: var(--forest); font-weight: bold; }
+
 .score-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -805,6 +873,37 @@ a.delete-game-button:focus-visible {
 .campaign-legend { display: flex; flex-wrap: wrap; gap: 1rem; padding: 0 1.5rem; font-size: 0.85rem; }
 .campaign-map { overflow: auto; }
 .campaign-map svg { display: block; width: 100%; min-width: 680px; height: auto; }
+.sakura-map {
+    max-height: min(70vh, 700px);
+    margin-block: 1rem;
+    border: 1px solid var(--border);
+    border-radius: .75rem;
+    background: #f5f2e9;
+}
+.sakura-map svg {
+    min-width: 820px;
+    background: radial-gradient(ellipse at 23% 29%, #f7dae5, transparent 52%),
+        radial-gradient(ellipse at 76% 60%, #e4eddb, transparent 62%);
+}
+.sakura-map-line { fill: none; stroke: #96a688; stroke-width: 3; stroke-dasharray: 4 6; }
+.sakura-map-line--blossoms { stroke: #bc7290; }
+.sakura-blossom-shape { fill: #fff9fb; stroke: #a45877; stroke-width: 1.6; }
+.sakura-map-flower.is-filled .sakura-blossom-shape { fill: #b34e78; stroke: #863657; }
+.sakura-map-flower.is-available .sakura-blossom-shape { fill: #fff1c5; stroke: #863657; stroke-width: 2.2; }
+.sakura-map-flower[aria-disabled="false"]:hover .sakura-blossom-shape,
+.sakura-map-flower:focus .sakura-blossom-shape { stroke: #5d1b37; stroke-width: 3; }
+.sakura-map-label {
+    fill: #41483d;
+    stroke: #fffaf5;
+    stroke-width: 5;
+    paint-order: stroke;
+    font-size: 18px;
+    font-weight: bold;
+    text-anchor: middle;
+    pointer-events: none;
+}
+.sakura-map-cost { fill: #53243b; font-size: 12px; font-weight: bold; text-anchor: middle; pointer-events: none; }
+.sakura-map-flower.is-filled .sakura-map-cost { fill: #fff; }
 .campaign-route { fill: none; stroke: #b6c3a9; stroke-width: 2; }
 .campaign-step { cursor: default; }
 .campaign-step > circle { fill: #fffdf5; stroke: #849178; stroke-width: 2; }

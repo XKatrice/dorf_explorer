@@ -1,5 +1,5 @@
-import { findGameRanking } from "./rankings.js?v=4e224e0d154c";
-import { readStoredJSON } from "./data-store.js?v=4e224e0d154c";
+import { findGameRanking } from "./rankings.js?v=fdb65b1ae0a8";
+import { readStoredJSON } from "./data-store.js?v=fdb65b1ae0a8";
 
 export const CAMPAIGN_KEY = "dorfExplorerCampaign";
 const MAP_REVISION = 2;
