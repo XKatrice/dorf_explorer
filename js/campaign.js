@@ -1,7 +1,7 @@
-import { readGames, writeStoredJSON, storageFailure } from "./data-store.js?v=fdb65b1ae0a8";
-import { ensureCampaignStarted, assertCampaignEditable } from "./campaign-files.js?v=fdb65b1ae0a8";
-import { loadGameRankings, findGameRanking } from "./rankings.js?v=fdb65b1ae0a8";
-import { initialiseMovementSummary } from "./campaign-tracker.js?v=fdb65b1ae0a8";
+import { readGames, writeStoredJSON, storageFailure } from "./data-store.js?v=9a57946151f7";
+import { ensureCampaignStarted, assertCampaignEditable } from "./campaign-files.js?v=9a57946151f7";
+import { loadGameRankings, findGameRanking } from "./rankings.js?v=9a57946151f7";
+import { initialiseMovementSummary } from "./campaign-tracker.js?v=9a57946151f7";
 
 const scoreLabels = {
     forest_tasks: "Forest tasks",

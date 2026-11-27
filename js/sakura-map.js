@@ -1,4 +1,4 @@
-import { nextRouteMoves, routes } from "./sakura-rules.js?v=fdb65b1ae0a8";
+import { boxes, nextRouteMoves, routes, sakuraMoveCost } from "./sakura-rules.js?v=9a57946151f7";
 
 const svgNamespace = "http://www.w3.org/2000/svg";
 const locations = {
@@ -52,10 +52,6 @@ function svgElement(tag, attributes = {}, text) {
     return element;
 }
 
-export function sakuraMoveCost(space) {
-    return space === "Cherry blossoms" ? 30 : 1;
-}
-
 export function createSakuraMap(container, advance) {
     const svg = svgElement("svg", { viewBox: "0 0 1000 1540" });
     const lines = svgElement("g", { "aria-hidden": "true" });
@@ -70,7 +66,7 @@ export function createSakuraMap(container, advance) {
             class: `campaign-step sakura-map-marker${flower ? " sakura-map-flower" : ""}`,
             transform: `translate(${x} ${y})`, "data-space": space
         });
-        if (space !== "Start") {
+        if (space !== "Start" && !boxes.has(space)) {
             group.setAttribute("role", "button");
             group.append(svgElement("circle", { r: finalFlower ? 22 : 11, class: "campaign-step-hit" }));
             const activate = () => {
@@ -98,7 +94,7 @@ export function createSakuraMap(container, advance) {
         if (finalFlower) group.append(svgElement("text", { y: 4, class: "sakura-map-cost", "aria-hidden": "true" }, "30"));
         if (destination && space !== "Junction near Bridges") {
             group.append(svgElement("text", { y: finalFlower ? -28 : -18, class: "sakura-map-label",
-                "aria-hidden": space === "Start" ? "false" : "true" }, label));
+                "aria-hidden": space === "Start" || boxes.has(space) ? "false" : "true" }, label));
         }
         const costLabel = flower ? `${sakuraMoveCost(space)} cherry blossom${finalFlower ? "s" : ""}` : "1 movement point";
         markers.set(space, { group, label: `${label}, ${costLabel}`, availableRoute: null });
@@ -143,7 +139,7 @@ export function createSakuraMap(container, advance) {
             marker.availableRoute = options.get(space);
             marker.group.classList.toggle("is-filled", filled);
             marker.group.classList.toggle("is-available", available);
-            if (space === "Start") continue;
+            if (space === "Start" || boxes.has(space)) continue;
             marker.group.setAttribute("tabindex", available ? "0" : "-1");
             marker.group.setAttribute("aria-disabled", String(!available));
             marker.group.setAttribute("aria-label", `${marker.label}${filled ? ", filled" : ""}`);

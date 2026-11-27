@@ -30,6 +30,6 @@ function showAppLoadError(error) {
 }
 
 const app = document.body.classList.contains("sakura-edition")
-    ? import("./sakura.js?v=fdb65b1ae0a8")
-    : import("./app.js?v=fdb65b1ae0a8");
+    ? import("./sakura.js?v=9a57946151f7")
+    : import("./app.js?v=9a57946151f7");
 app.catch(showAppLoadError);

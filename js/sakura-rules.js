@@ -1,4 +1,4 @@
-// Each route's cost includes the space at its destination, when applicable.
+// Route lengths count map markers, including destinations. Boxes open for free.
 // See the English Sakura Campaign Pad published by Pegasus Spiele.
 const movementRoutes = [
     ["Start", "Box 1", 2], ["Box 1", "Box 2", 4],
@@ -27,6 +27,13 @@ export const routes = [
 ];
 
 const junctions = new Set(["Junction near Bridges"]);
+export const boxes = new Set(["Box 1", "Box 2", "Box 3"]);
+
+export function sakuraMoveCost(space) {
+    if (boxes.has(space)) return 0;
+    return space === "Cherry blossoms" ? 30 : 1;
+}
+
 const graph = new Map();
 function connect(a, b) {
     if (!graph.has(a)) graph.set(a, new Set());
@@ -104,10 +111,13 @@ export function movementForScore(score) {
 }
 
 export function campaignProgress(games, moves) {
-    const reached = new Set(["Start", ...moves.map(move => move.space)]);
+    const reached = new Set(["Start", ...moves.filter(move => !boxes.has(move.space)).map(move => move.space)]);
+    for (const box of boxes) {
+        if ([...graph.get(box)].some(space => reached.has(space))) reached.add(box);
+    }
     const latestGame = games.at(-1);
     const movement = games.reduce((total, game) => total + movementForScore(game.total), 0)
-        - moves.filter(move => move.currency === "movement").length;
+        - moves.reduce((total, move) => total + (move.currency === "movement" ? sakuraMoveCost(move.space) : 0), 0);
     const blossoms = (latestGame?.entries.blossoms || 0) - (latestGame?.entries.blossomsForCards || 0) - moves.reduce((total, move) =>
         total + (move.currency === "blossoms" && move.gameId === latestGame?.id ? move.cost : 0), 0);
     return { reached, movement, blossoms, latestGame };
@@ -116,11 +126,11 @@ export function campaignProgress(games, moves) {
 export function nextRouteMoves(route, progress) {
     const path = [route.from, ...route.spaces, route.to];
     return path.filter(space => {
-        if (progress.reached.has(space)) return false;
+        if (boxes.has(space) || progress.reached.has(space)) return false;
         if (space === "Cherry blossoms" && route.currency === "movement") return false;
         return [...graph.get(space)].some(neighbour => path.includes(neighbour) && progress.reached.has(neighbour));
     });
 }
 
 export const routeAchievements = [...new Set(routes.map(route => route.to))]
-    .filter(name => !junctions.has(name) && !name.startsWith("Box ") && !name.startsWith("Extra "));
+    .filter(name => !junctions.has(name) && !boxes.has(name) && !name.startsWith("Extra "));

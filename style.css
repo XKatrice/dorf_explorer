@@ -143,19 +143,44 @@ button:hover {
     overflow-wrap: anywhere;
 }
 #sakura-score-fields .sakura-score-card[hidden] { display: none; }
+.sakura-score-icons {
+    grid-area: icon;
+    display: flex;
+    justify-content: center;
+    gap: .25rem;
+}
+.sakura-score-icons img {
+    width: 80px;
+    min-width: 0;
+    height: 100px;
+    object-fit: contain;
+}
+.sakura-score-icons[data-score="greenFlag"] img { filter: hue-rotate(120deg); }
+.sakura-score-icons[data-score="redFlag"] img { filter: hue-rotate(17deg) saturate(1.3); }
+.sakura-score-icons[data-score="wraparoundBonus"] {
+    position: relative;
+    align-items: center;
+    gap: 0;
+    min-height: 100px;
+}
+.sakura-score-icons[data-score="wraparoundBonus"] img:first-child,
+.sakura-score-icons[data-score="wraparoundBonus"] img:last-child {
+    width: 68px;
+    height: 85px;
+}
+.sakura-score-icons[data-score="wraparoundBonus"] img:nth-child(2) {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    max-width: 100%;
+    z-index: 1;
+}
 #sakura-score-fields .sakura-score-card > h3 { justify-self: center; }
 #sakura-score-fields .special-entry, .sakura-number-entry { grid-area: entry; justify-self: center; }
 .sakura-number-entry { display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: .5rem; }
 .sakura-number-entry + .sakura-number-entry { grid-area: scores; }
 #sakura-score-fields .special-calculation { text-align: center; }
 #sakura-score-fields input[type="number"] { box-sizing: border-box; width: 5rem; flex-shrink: 0; font: inherit; padding: .25rem; }
-.score-chip--sakura-cherry { --chip-colour: #b64f77; }
-.score-chip--sakura-rice { --chip-colour: #5c823f; }
-.score-chip--sakura-village { --chip-colour: #b34e3a; }
-.score-chip--sakura-road { --chip-colour: #805a46; }
-.score-chip--sakura-river { --chip-colour: #367e97; }
-.score-chip--sakura-wraparound { --chip-colour: #6f6480; }
-.score-chip--sakura-double { --chip-colour: #8a6225; }
 .sakura-panel li { margin-block: .45rem; }
 .sakura-panel li button { margin-inline-start: .5rem; padding: .3rem .6rem; }
 .sakura-panel button:disabled { opacity: .6; cursor: default; }
@@ -311,8 +336,12 @@ button:hover {
     justify-self: center;
 }
 
-.icon-stack {
+.icon-stack,
+.sakura-score-icons[data-score="springsTasks"] {
     position: relative;
+}
+
+.icon-stack {
     width: 100px;
 }
 
@@ -323,12 +352,30 @@ button:hover {
     opacity: 0.8;
 }
 
-.overlay-icon {
+.overlay-icon,
+.sakura-score-icons[data-score="springsTasks"] img:last-child {
     position: absolute;
+    filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.3));
+}
+
+.overlay-icon {
     width: 50px;
     right: 30px;
     bottom: -8px;
-    filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.3));
+}
+
+.sakura-score-icons[data-score="springsTasks"] {
+    justify-self: center;
+    justify-content: flex-end;
+    width: 124px;
+    max-width: 100%;
+}
+
+.sakura-score-icons[data-score="springsTasks"] img:last-child {
+    width: 64px;
+    height: auto;
+    left: 0;
+    bottom: 6px;
 }
 
 
@@ -425,6 +472,14 @@ button:hover {
 .score-chip--river {
     --chip-colour: #72B5C4;
 }
+
+.score-chip--sakura-cherry { --chip-colour: #c04479; }
+.score-chip--sakura-rice { --chip-colour: #4c7836; }
+.score-chip--sakura-village { --chip-colour: #b73339; }
+.score-chip--sakura-road { --chip-colour: #805a46; }
+.score-chip--sakura-river { --chip-colour: #2d6ca3; }
+.score-chip--sakura-wraparound { --chip-colour: #000; }
+.score-chip--sakura-double { --chip-colour: #8a6225; }
 
 
 .score-chip::after {

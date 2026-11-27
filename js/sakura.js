@@ -1,10 +1,10 @@
-import { isValidScore, readScoreInput } from "./validation.js?v=fdb65b1ae0a8";
-import { initialiseCardNavigation } from "./card-navigation.js?v=fdb65b1ae0a8";
-import { createSakuraMap, sakuraMoveCost } from "./sakura-map.js?v=fdb65b1ae0a8";
+import { isValidScore, readScoreInput } from "./validation.js?v=9a57946151f7";
+import { initialiseCardNavigation } from "./card-navigation.js?v=9a57946151f7";
+import { createSakuraMap } from "./sakura-map.js?v=9a57946151f7";
 import {
-    campaignProgress, cardAchievements, movementForScore, nextRouteMoves, routeAchievements,
-    scorecardUnlocks, scoreGame, scoreGroups, scoreUnlocks
-} from "./sakura-rules.js?v=fdb65b1ae0a8";
+    boxes, campaignProgress, cardAchievements, movementForScore, nextRouteMoves, routeAchievements,
+    sakuraMoveCost, scorecardUnlocks, scoreGame, scoreGroups, scoreUnlocks
+} from "./sakura-rules.js?v=9a57946151f7";
 
 const storageKey = "dorfExplorerSakura";
 const form = document.getElementById("sakura-score-form");
@@ -60,27 +60,44 @@ function writeCampaign(campaign) {
 const cards = new Map();
 const scoreSections = [];
 const taskEntries = new Map();
+const wraparoundIcon = "wraparound";
 const taskStyles = {
     cherry: ["Cherry Tree Tasks", "forest", "cherry"],
     rice: ["Rice Tasks", "rice_paddy", "rice"],
     village: ["Village Tasks", "village", "village"],
     road: ["Road Tasks", "road", "road"],
     river: ["River Tasks", "river", "river"],
-    wraparound: ["Wraparound Tasks", "surrounded_hex_tile", "wraparound"],
-    double: ["Double Tasks", "surrounded_hex_tile", "double"]
+    wraparound: ["Wraparound Tasks", wraparoundIcon, "wraparound"],
+    double: ["Double Tasks", wraparoundIcon, "double"]
+};
+const scoringIcons = {
+    pinkFlag: ["flag"],
+    greenFlag: ["flag"],
+    redFlag: ["flag"],
+    longRoad: ["road"],
+    longRiver: ["river"],
+    wraparoundBonus: ["road", wraparoundIcon, "river"],
+    temples: ["temple"],
+    springs: ["springs"],
+    springsTasks: ["springs", wraparoundIcon]
 };
 let unlockedScores = new Set();
 let scoreBlossoms = false;
 
-function createCard(grid, id, title, iconName) {
+function createCard(grid, id, title, iconNames = []) {
     const card = document.createElement("div");
     card.className = "score-item special-tile sakura-score-card";
-    if (iconName) {
-        const icon = document.createElement("img");
-        icon.className = "score-icon";
-        icon.src = `assets/sakura_${iconName}.png`;
-        icon.alt = "";
-        card.append(icon);
+    if (iconNames.length) {
+        const icons = document.createElement("div");
+        icons.className = "sakura-score-icons";
+        icons.dataset.score = id;
+        for (const iconName of iconNames) {
+            const icon = document.createElement("img");
+            icon.src = `assets/sakura_${iconName}.png`;
+            icon.alt = "";
+            icons.append(icon);
+        }
+        card.append(icons);
     }
     card.append(element("h3", title));
     grid.append(card);
@@ -118,7 +135,7 @@ function addField(card, id, name, multiplier = 1) {
 
 function addTaskCard(grid, id, multiplier) {
     const [title, icon, color] = taskStyles[id];
-    const card = createCard(grid, id, title, icon);
+    const card = createCard(grid, id, title, [icon]);
     const entry = document.createElement("div");
     entry.className = "special-entry";
     const [label, input] = labelledInput(id, id === "double" ? "Task count" : "Task score", 1, multiplier);
@@ -189,7 +206,7 @@ for (const [name, groupFields] of scoreGroups) {
     scoreSections.push(section);
     for (const [id, label, multiplier = 1] of groupFields) {
         if (taskStyles[id]) addTaskCard(grid, id, multiplier);
-        else addField(createCard(grid, id, label), id, multiplier === 1 ? "Count" : `Count (×${multiplier})`, multiplier);
+        else addField(createCard(grid, id, label, scoringIcons[id]), id, multiplier === 1 ? "Count" : `Count (×${multiplier})`, multiplier);
     }
 }
 const blossomCard = createCard(scoreSections.at(-1).querySelector(".score-grid"), "blossoms", "Cherry Blossoms");
@@ -315,7 +332,11 @@ function advance(route, space) {
 function renderCampaign(campaign, progress) {
     document.getElementById("sakura-balances").textContent =
         `${progress.movement} movement points available · ${progress.blossoms} cherry blossoms left from your latest game`;
-    document.getElementById("sakura-undo").disabled = !campaign.moves.length;
+    const refunded = campaign.moves.filter(move => move.currency === "movement" && boxes.has(move.space)).length;
+    const refundNotice = document.getElementById("sakura-box-refund");
+    refundNotice.hidden = refunded === 0;
+    refundNotice.textContent = `${refunded} movement ${refunded === 1 ? "point" : "points"} previously spent opening boxes automatically returned to your balance.`;
+    document.getElementById("sakura-undo").disabled = !campaign.moves.some(move => !boxes.has(move.space));
     const map = document.getElementById("sakura-map");
     if (!updateMap) {
         updateMap = createSakuraMap(map, (route, space) => attempt(() => advance(route, space)));
@@ -356,6 +377,7 @@ function renderCampaign(campaign, progress) {
 
 document.getElementById("sakura-undo").addEventListener("click", () => attempt(() => {
     const campaign = readCampaign();
+    while (boxes.has(campaign.moves.at(-1)?.space)) campaign.moves.pop();
     if (!campaign.moves.length) return;
     campaign.moves.pop();
     writeCampaign(campaign);
